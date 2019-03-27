@@ -1,0 +1,44 @@
+# Required settings
+lang en_US.UTF-8
+keyboard us
+rootpw {{ password }}
+authconfig --enableshadow --enablemd5
+timezone UTC
+
+# Optional settings
+autopart --nolvm
+bootloader --location=mbr
+cdrom
+clearpart --all --initlabel
+firewall --disabled
+firstboot --disabled
+install
+network --bootproto=dhcp
+reboot
+selinux --disabled
+skipx
+text
+zerombr
+
+# Packages
+%packages --nobase --ignoremissing
+@Base
+curl
+gcc
+kernel-devel
+kernel-headers
+make
+%end
+
+# Post
+%post
+/usr/bin/yum -y update
+/usr/bin/yum -y install epel-release
+/usr/bin/yum -y install facter perl redhat-lsb-core sudo wget
+/usr/sbin/groupadd {{ username }}
+/usr/sbin/useradd {{ username }} -g {{ username }} -G wheel
+echo "{{ password }}"|passwd --stdin {{ username }}
+echo "{{ username }}        ALL=(ALL)       NOPASSWD: ALL" >> /etc/sudoers
+sed -i -e 's/Defaults    requiretty.*/ #Defaults    requiretty/g' /etc/sudoers
+
+%end

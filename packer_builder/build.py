@@ -2,15 +2,28 @@
 import os
 import subprocess
 import sys
+from .template import Template
 
 
 class Build():
-    def __init__(self, distro_spec, builder):
-        self.builders = distro_spec['builders']
-        self.path = builder['path']
-        self.current_dir = os.getcwd()
-        self.validate()
-        self.build()
+    """Main builder process."""
+
+    def __init__(self, OUTPUT_DIR, DISTROS):
+        self.distros = DISTROS
+        self.output_dir = OUTPUT_DIR
+        self.iterate()
+
+    def iterate(self):
+        """Iterate through defined distros and build them."""
+        for distro, distro_spec in self.distros.items():
+            for version, version_spec in distro_spec['versions'].items():
+                builder = Template(self.output_dir, distro, distro_spec,
+                                   version, version_spec).builder()
+                self.builders = distro_spec['builders']
+                self.path = builder['path']
+                self.current_dir = os.getcwd()
+                self.validate()
+                self.build()
 
     def validate(self):
         """Validate generated Packer template."""

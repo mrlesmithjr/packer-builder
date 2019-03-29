@@ -6,7 +6,7 @@ def get_args():
     """Available command line arguments to pass."""
     parser = argparse.ArgumentParser(description="Packer template builder.")
     parser.add_argument('-f', '--file', help='Path to distro ',
-                        default='distros.yml', required=True)
+                        default='distros.yml', required=False)
     parser.add_argument('-o', '--outputdir', required=True)
     args = parser.parse_args()
     return args

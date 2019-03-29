@@ -78,7 +78,44 @@ class Template():
             os.makedirs(self.http_dir)
         username = self.distro_spec['username']
         password = self.distro_spec['password']
-        if self.distro.lower() == 'centos':
+        if self.distro.lower() == 'alpine':
+            bootstrap_cfg = 'answers'
+            self.builder_spec.update(
+                {
+                    'boot_command': [
+                        'root<enter><wait><wait><wait>',
+                        'ifconfig eth0 up && udhcpc -i eth0<enter><wait10>',
+                        'wget http://{{ .HTTPIP }}:{{ .HTTPPort }}/answers<enter><wait>',
+                        'sed -i \'s/dev_replace/{{ user `disk_dev` }}/g\' $PWD/answers<enter>',
+                        'setup-alpine -f $PWD/answers<enter><wait5>',
+                        '{{ user `password` }}<enter><wait>',
+                        '{{ user `password` }}<enter><wait>',
+                        '<wait10><wait10><wait10>',
+                        'y<enter>',
+                        '<wait10><wait10><wait10>',
+                        'rc-service sshd stop<enter>',
+                        'mount /dev/{{ user `disk_dev` }}2 /mnt/<enter>',
+                        'echo \'PermitRootLogin yes\' >> /mnt/etc/ssh/sshd_config<enter>',
+                        'echo http://dl-cdn.alpinelinux.org/alpine/edge/community >> /mnt/etc/apk/repositories<enter>',
+                        'mount -t proc none /mnt/proc<enter>',
+                        'mount -o bind /sys /mnt/sys<enter>',
+                        'mount -o bind /dev /mnt/dev<enter>',
+                        'chroot /mnt /bin/sh -l<enter>',
+                        'apk update<enter><wait>',
+                        'apk add bash curl rsyslog ruby shadow sudo<enter><wait>',
+                        'gem install facter<enter>',
+                        '<wait60><wait60>',
+                        'exit<enter><wait10>',
+                        'umount /mnt/proc<enter>',
+                        'umount /mnt/sys<enter>',
+                        'umount /mnt/dev<enter>',
+                        'umount /mnt<enter>',
+                        'reboot<enter>'
+                    ],
+                    'shutdown_command': '/sbin/poweroff',
+                }
+            )
+        elif self.distro.lower() == 'centos':
             bootstrap_cfg = 'ks.cfg'
             self.builder_spec.update(
                 {
@@ -163,13 +200,19 @@ class Template():
             'format': 'qcow2',
         })
 
+        # Add disk device to install to
+        if self.distro.lower() == 'alpine':
+            self.template['variables'].update({'disk_dev': 'vda'})
+
     def virtualbox_builder(self):
         """Virtualbox specific builder specs."""
         self.builder_spec.update({
             'type': 'virtualbox-iso',
             'hard_drive_interface': '{{ user `disk_adapter_type` }}',
         })
-        if self.distro.lower() == 'centos':
+        if self.distro.lower() == 'alpine':
+            guest_os_type = 'Linux26_64'
+        elif self.distro.lower() == 'centos':
             guest_os_type = 'RedHat_64'
         elif self.distro.lower() == 'debian':
             guest_os_type = 'Debian_64'
@@ -179,6 +222,10 @@ class Template():
             guest_os_type = 'Ubuntu_64'
 
         self.builder_spec.update({'guest_os_type': guest_os_type})
+
+        # Add disk device to install to
+        if self.distro.lower() == 'alpine':
+            self.template['variables'].update({'disk_dev': 'sda'})
 
     def vmware_builder(self):
         """VMware specific builder specs."""
@@ -192,7 +239,9 @@ class Template():
             },
             'vmx_remove_ethernet_interfaces': True
         })
-        if self.distro.lower() == 'centos':
+        if self.distro.lower() == 'alpine':
+            guest_os_type = 'other3xlinux-64'
+        elif self.distro.lower() == 'centos':
             guest_os_type = 'centos-64'
         elif self.distro.lower() == 'debian':
             guest_os_type = 'debian8-64'
@@ -202,6 +251,10 @@ class Template():
             guest_os_type = 'ubuntu-64'
 
         self.builder_spec.update({'guest_os_type': guest_os_type})
+
+        # Add disk device to install to
+        if self.distro.lower() == 'alpine':
+            self.template['variables'].update({'disk_dev': 'sda'})
 
     def get_provisioners(self):
         self.template['provisioners'] = []

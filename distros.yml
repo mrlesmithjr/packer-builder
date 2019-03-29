@@ -36,6 +36,26 @@ Debian:
       iso_checksum: 73bd56fb4548efa384bf32fd25808b99198f81c23cf19ab9e6507d898cd58dce
       iso_checksum_type: sha256
       iso_url: https://cdimage.debian.org/debian-cd/current/amd64/iso-cd/debian-9.8.0-amd64-netinst.iso
+Fedora:
+  builders:
+    - qemu
+    - virtualbox-iso
+    - vmware-iso
+  cpus: 1
+  disk_adapter_type: scsi
+  disk_size: 36864
+  memory: 1024
+  password: P@55w0rd
+  username: root
+  versions:
+    28:
+      iso_checksum: ea1efdc692356b3346326f82e2f468903e8da59324fdee8b10eac4fea83f23fe
+      iso_checksum_type: sha256
+      iso_url: http://mirror.cs.princeton.edu/pub/mirrors/fedora/linux//releases/28/Server/x86_64/iso/Fedora-Server-netinst-x86_64-28-1.1.iso
+    29:
+      iso_checksum: aa7fb0e6e5b71774ebdaab0dae76bdd9246a5bc7aedc28b7f1103aaaf9750654
+      iso_checksum_type: sha256
+      iso_url: http://download.fedoraproject.org/pub/fedora/linux/releases/29/Server/x86_64/iso/Fedora-Server-netinst-x86_64-29-1.2.iso
 Ubuntu:
   builders:
     - qemu

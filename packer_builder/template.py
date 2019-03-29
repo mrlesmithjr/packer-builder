@@ -105,6 +105,18 @@ class Template():
                     'shutdown_command': 'sudo /sbin/halt -h -p'
                 }
             )
+        elif self.distro.lower() == 'fedora':
+            bootstrap_cfg = 'ks.cfg'
+            self.builder_spec.update(
+                {
+                    'boot_command': [
+                        '<tab> inst.text ',
+                        'inst.ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/'f'{bootstrap_cfg}',
+                        '<enter><wait>'
+                    ],
+                    'shutdown_command': '/sbin/halt -h -p',
+                }
+            )
         elif self.distro.lower() == 'ubuntu':
             bootstrap_cfg = 'preseed.cfg'
             self.builder_spec.update(
@@ -161,6 +173,8 @@ class Template():
             guest_os_type = 'RedHat_64'
         elif self.distro.lower() == 'debian':
             guest_os_type = 'Debian_64'
+        elif self.distro.lower() == 'fedora':
+            guest_os_type = 'Fedora_64'
         elif self.distro.lower() == 'ubuntu':
             guest_os_type = 'Ubuntu_64'
 
@@ -182,6 +196,8 @@ class Template():
             guest_os_type = 'centos-64'
         elif self.distro.lower() == 'debian':
             guest_os_type = 'debian8-64'
+        elif self.distro.lower() == 'fedora':
+            guest_os_type = 'fedora-64'
         elif self.distro.lower() == 'ubuntu':
             guest_os_type = 'ubuntu-64'
 

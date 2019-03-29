@@ -76,6 +76,22 @@ Fedora:
       iso_checksum: aa7fb0e6e5b71774ebdaab0dae76bdd9246a5bc7aedc28b7f1103aaaf9750654
       iso_checksum_type: sha256
       iso_url: http://download.fedoraproject.org/pub/fedora/linux/releases/29/Server/x86_64/iso/Fedora-Server-netinst-x86_64-29-1.2.iso
+FreeNAS:
+  builders:
+    - qemu
+    - virtualbox-iso
+    - vmware-iso
+  cpus: 1
+  disk_adapter_type: scsi
+  disk_size: 36864
+  memory: 1024
+  password: P@55w0rd
+  username: root
+  versions:
+    11.2:
+      iso_checksum: 3fb19c9304072bdf915d7c275e35ebc0a38d4b741e16f36a8f7af76413242092
+      iso_checksum_type: sha256
+      iso_url: https://download.freenas.org/11.2/STABLE/U3/x64/FreeNAS-11.2-U3.iso
 Ubuntu:
   builders:
     - qemu

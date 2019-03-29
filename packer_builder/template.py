@@ -162,6 +162,27 @@ class Template():
                     'shutdown_command': '/sbin/halt -h -p',
                 }
             )
+        elif self.distro == 'freenas':
+            self.builder_spec.update(
+                {
+                    'boot_command': [
+                        '<enter>',
+                        '<wait10><wait5>1<enter>',
+                        'y',
+                        '<wait5><spacebar>o<enter>',
+                        '<enter>',
+                        '{{ user `password` }}<tab>{{ user `password` }}<tab><enter>',
+                        '<enter>',
+                        '<wait60><wait60>',
+                        '<enter>',
+                        '3<enter>',
+                        '<wait60><wait60><wait30>',
+                        '9<enter>',
+                        'curl -X PUT -u {{ user `username` }}:{{ user `password` }} -H \'Content-Type: application/json\' -d \'{\"ssh_rootlogin\": true}\' http://localhost/api/v1.0/services/ssh/<enter>',
+                        'curl -X PUT -u {{ user `username` }}:{{ user `password` }} -H \'Content-Type: application/json\' -d \'{\"srv_enable\": true}\' http://localhost/api/v1.0/services/services/ssh/<enter>'
+                    ]
+                }
+            )
         elif self.distro == 'ubuntu':
             bootstrap_cfg = 'preseed.cfg'
             self.builder_spec.update(
@@ -222,6 +243,8 @@ class Template():
             guest_os_type = 'Debian_64'
         elif self.distro == 'fedora':
             guest_os_type = 'Fedora_64'
+        elif self.distro == 'freenas':
+            guest_os_type = 'FreeBSD_64'
         elif self.distro == 'ubuntu':
             guest_os_type = 'Ubuntu_64'
 
@@ -247,6 +270,8 @@ class Template():
             guest_os_type = 'debian8-64'
         elif self.distro == 'fedora':
             guest_os_type = 'fedora-64'
+        elif self.distro == 'freenas':
+            guest_os_type = 'FreeBSD-64'
         elif self.distro == 'ubuntu':
             guest_os_type = 'ubuntu-64'
 
@@ -255,10 +280,25 @@ class Template():
     def get_provisioners(self):
         """Direct provisioners based on distro type."""
         self.template['provisioners'] = []
-        if self.distro == 'windows':
+        if self.distro == 'freenas':
+            self.freenas_provisioners()
+        elif self.distro == 'windows':
             self.windows_provisioners()
         else:
             self.linux_provisioners()
+
+    def freenas_provisioners(self):
+        provisioner_spec = {
+            'type': 'shell',
+            'environment_vars': [
+                'SSH_USER={{ user `username` }}',
+                'SSH_PASS={{ user `password` }}'
+            ],
+            'scripts': [
+                f'{self.build_scripts_dir}/freenas.sh'
+            ]
+        }
+        self.template['provisioners'].append(provisioner_spec)
 
     def linux_provisioners(self):
         """Linux specific provisioners."""

@@ -39,14 +39,15 @@ class Template():
     def get_builders(self):
         self.template['builders'] = []
         for builder in self.distro_spec['builders']:
+            self.builder = builder.lower()
             self.builder_spec = dict()
             self.common_builder()
             self.distro_builder()
-            if builder.lower() == 'qemu':
+            if self.builder == 'qemu':
                 self.qemu_builder()
-            elif builder.lower() == 'virtualbox-iso':
+            elif self.builder == 'virtualbox-iso':
                 self.virtualbox_builder()
-            elif builder.lower() == 'vmware-iso':
+            elif self.builder == 'vmware-iso':
                 self.vmware_builder()
 
             self.template['builders'].append(self.builder_spec)
@@ -79,6 +80,10 @@ class Template():
         username = self.distro_spec['username']
         password = self.distro_spec['password']
         if self.distro.lower() == 'alpine':
+            if self.builder == 'qemu':
+                disk_dev = 'vda'
+            else:
+                disk_dev = 'sda'
             bootstrap_cfg = 'answers'
             self.builder_spec.update(
                 {
@@ -86,7 +91,7 @@ class Template():
                         'root<enter><wait><wait><wait>',
                         'ifconfig eth0 up && udhcpc -i eth0<enter><wait10>',
                         'wget http://{{ .HTTPIP }}:{{ .HTTPPort }}/answers<enter><wait>',
-                        'sed -i \'s/dev_replace/{{ user `disk_dev` }}/g\' $PWD/answers<enter>',
+                        'sed -i \'s/dev_replace/'f'{disk_dev}''/g\' $PWD/answers<enter>',
                         'setup-alpine -f $PWD/answers<enter><wait5>',
                         '{{ user `password` }}<enter><wait>',
                         '{{ user `password` }}<enter><wait>',
@@ -94,7 +99,7 @@ class Template():
                         'y<enter>',
                         '<wait10><wait10><wait10>',
                         'rc-service sshd stop<enter>',
-                        'mount /dev/{{ user `disk_dev` }}2 /mnt/<enter>',
+                        'mount /dev/'f'{disk_dev}''2 /mnt/<enter>',
                         'echo \'PermitRootLogin yes\' >> /mnt/etc/ssh/sshd_config<enter>',
                         'echo http://dl-cdn.alpinelinux.org/alpine/edge/community >> /mnt/etc/apk/repositories<enter>',
                         'mount -t proc none /mnt/proc<enter>',
@@ -200,10 +205,6 @@ class Template():
             'format': 'qcow2',
         })
 
-        # Add disk device to install to
-        if self.distro.lower() == 'alpine':
-            self.template['variables'].update({'disk_dev': 'vda'})
-
     def virtualbox_builder(self):
         """Virtualbox specific builder specs."""
         self.builder_spec.update({
@@ -222,10 +223,6 @@ class Template():
             guest_os_type = 'Ubuntu_64'
 
         self.builder_spec.update({'guest_os_type': guest_os_type})
-
-        # Add disk device to install to
-        if self.distro.lower() == 'alpine':
-            self.template['variables'].update({'disk_dev': 'sda'})
 
     def vmware_builder(self):
         """VMware specific builder specs."""
@@ -251,10 +248,6 @@ class Template():
             guest_os_type = 'ubuntu-64'
 
         self.builder_spec.update({'guest_os_type': guest_os_type})
-
-        # Add disk device to install to
-        if self.distro.lower() == 'alpine':
-            self.template['variables'].update({'disk_dev': 'sda'})
 
     def get_provisioners(self):
         self.template['provisioners'] = []

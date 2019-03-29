@@ -8,8 +8,10 @@ def main():
     """Packer builder main execution."""
     args = get_args()
     distros = Distros(args).get_distros()
-    output_dir = args.outputdir
-    Build(output_dir, distros)
+    if args.action == 'build':
+        Build(args, distros)
+    elif args.action == 'list-distros':
+        Distros(args).list_distros()
 
 
 if __name__ == '__main__':

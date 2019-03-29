@@ -18,3 +18,8 @@ class Distros():
 
     def get_distros(self):
         return self.distros
+
+    def list_distros(self):
+        """Return list of distros available."""
+        for distro in self.distros:
+            print(distro)

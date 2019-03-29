@@ -8,21 +8,27 @@ from .template import Template
 class Build():
     """Main builder process."""
 
-    def __init__(self, output_dir, distros):
+    def __init__(self, args, distros):
         self.distros = distros
-        self.build_dir = output_dir
+        self.build_dir = args.outputdir
+        if args.distro is not None:
+            self.distro = args.distro
+        else:
+            self.distro = 'all'
         self.iterate()
 
     def iterate(self):
         """Iterate through defined distros and build them."""
         for distro, distro_spec in self.distros.items():
-            for version, version_spec in distro_spec['versions'].items():
-                Template(self.build_dir, distro, distro_spec,
-                         version, version_spec)
-                self.builders = distro_spec['builders']
-                self.current_dir = os.getcwd()
-                self.validate()
-                self.build()
+            if self.distro == 'all' or (self.distro != 'all' and
+                                        self.distro == distro):
+                for version, version_spec in distro_spec['versions'].items():
+                    Template(self.build_dir, distro, distro_spec,
+                             version, version_spec)
+                    self.builders = distro_spec['builders']
+                    self.current_dir = os.getcwd()
+                    self.validate()
+                    self.build()
 
     def validate(self):
         """Validate generated Packer template."""

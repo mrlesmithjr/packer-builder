@@ -69,7 +69,7 @@ class Template():
             'output_directory': f'{self.build_dir}''/{{ user `vm_name` }}-{{ build_type }}-{{ timestamp }}',
             'vm_name': '{{ user `vm_name` }}-{{ build_type }}-{{ timestamp }}'
         })
-        if self.distro == 'windows':
+        if self.distro != 'windows':
             self.builder_spec.update({
                 'ssh_password': '{{ user `password` }}',
                 'ssh_username': '{{ user `username` }}',

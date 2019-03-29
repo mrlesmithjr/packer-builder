@@ -10,6 +10,8 @@ def get_args():
     parser.add_argument('-f', '--file', help='Path to distro.',
                         default='distros.yml', required=False)
     parser.add_argument('-o', '--outputdir',
-                        help='Define path to save builds.', required=True)
+                        help='Define path to save builds.')
     args = parser.parse_args()
+    if args.action == 'build' and args.outputdir is None:
+        parser.error('--outputdir is REQUIRED!')
     return args

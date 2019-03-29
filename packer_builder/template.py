@@ -206,19 +206,20 @@ class Template():
                     'shutdown_command': 'sudo /sbin/halt -h -p'
                 }
             )
-        j2_template_dir = os.path.join(
-            self.script_dir, 'http', self.distro)
-        j2_template = jinja2.Environment(
-            loader=jinja2.FileSystemLoader(j2_template_dir),
-            trim_blocks=True)
-        bootstrap_template = j2_template.get_template(
-            bootstrap_cfg + '.j2').render(username=username, password=password)
-        bootstrap_file = os.path.join(self.http_dir, bootstrap_cfg)
-        if os.path.isfile(bootstrap_file):
-            os.remove(bootstrap_file)
-        with open(bootstrap_file, 'w') as bootstrap_cfg:
-            bootstrap_cfg.write(bootstrap_template)
-            bootstrap_cfg.close()
+        if bootstrap_cfg:
+            j2_template_dir = os.path.join(
+                self.script_dir, 'http', self.distro)
+            j2_template = jinja2.Environment(
+                loader=jinja2.FileSystemLoader(j2_template_dir),
+                trim_blocks=True)
+            bootstrap_template = j2_template.get_template(
+                bootstrap_cfg + '.j2').render(username=username, password=password)
+            bootstrap_file = os.path.join(self.http_dir, bootstrap_cfg)
+            if os.path.isfile(bootstrap_file):
+                os.remove(bootstrap_file)
+            with open(bootstrap_file, 'w') as bootstrap_cfg:
+                bootstrap_cfg.write(bootstrap_template)
+                bootstrap_cfg.close()
 
     def qemu_builder(self):
         """Qemu specific builder specs."""

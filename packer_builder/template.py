@@ -163,6 +163,7 @@ class Template():
                 }
             )
         elif self.distro == 'freenas':
+            bootstrap_cfg = None
             self.builder_spec.update(
                 {
                     'boot_command': [
@@ -206,7 +207,7 @@ class Template():
                     'shutdown_command': 'sudo /sbin/halt -h -p'
                 }
             )
-        if bootstrap_cfg:
+        if bootstrap_cfg is not None:
             j2_template_dir = os.path.join(
                 self.script_dir, 'http', self.distro)
             j2_template = jinja2.Environment(

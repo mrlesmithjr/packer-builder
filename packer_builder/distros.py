@@ -2,8 +2,8 @@ import yaml
 
 
 class Distros():
-    def __init__(self, ARGS):
-        self.file = ARGS.file
+    def __init__(self, args):
+        self.file = args.file
         self.distros = dict()
         self.load_file()
         self.parse_file()

@@ -1,12 +1,13 @@
+"""Generates the Packer build template."""
 import os
 import json
 import jinja2
 
 
 class Template():
-    def __init__(self, OUTPUT_DIR, distro, distro_spec, version, version_spec):
+    def __init__(self, output_dir, distro, distro_spec, version, version_spec):
         self.script_dir = os.path.dirname(os.path.abspath(__file__))
-        self.build_dir = OUTPUT_DIR
+        self.build_dir = output_dir
         self.build_scripts_dir = os.path.join(self.script_dir, 'scripts')
         self.distro = distro
         self.distro_spec = distro_spec
@@ -21,6 +22,7 @@ class Template():
         self.save_template()
 
     def get_vars(self):
+        """Define user specific variables."""
         self.template['variables'] = {
             'cpus': str(self.distro_spec['cpus']),
             'memory': str(self.distro_spec['memory']),
@@ -71,6 +73,7 @@ class Template():
             })
 
     def distro_builder(self):
+        """Distro specific builder specs."""
         if not os.path.isdir(self.http_dir):
             os.makedirs(self.http_dir)
         username = self.distro_spec['username']
@@ -192,6 +195,7 @@ class Template():
             self.linux_provisioners()
 
     def linux_provisioners(self):
+        """Linux specific provisioners."""
         provisioner_spec = {
             'type': 'shell',
             'scripts': [
@@ -205,9 +209,11 @@ class Template():
         self.template['provisioners'].append(provisioner_spec)
 
     def windows_provisioners(self):
+        """Windows specific provisioners."""
         pass
 
     def get_post_processors(self):
+        """Post processors for builds."""
         vmx_file = f'{self.build_dir}''/{{ user `vm_name` }}-{{ build_type }}-{{ timestamp }}/{{ user `vm_name` }}-{{ build_type }}-{{ timestamp }}.vmx'
         ovf_file = f'{self.build_dir}''/{{ user `vm_name` }}-{{ build_type }}-{{ timestamp }}/{{ user `vm_name` }}-{{ build_type }}-{{ timestamp }}.ovf'
         self.template['post-processors'] = [
@@ -218,11 +224,8 @@ class Template():
             }
         ]
 
-    def builder(self):
-        builder = {'path': self.build_dir}
-        return builder
-
     def save_template(self):
+        """Save generated template for building."""
         template_json = json.dumps(self.template, indent=4)
         template_file = os.path.join(self.build_dir, 'template.json')
         if os.path.isfile(template_file):

@@ -8,26 +8,25 @@ from .template import Template
 class Build():
     """Main builder process."""
 
-    def __init__(self, OUTPUT_DIR, DISTROS):
-        self.distros = DISTROS
-        self.output_dir = OUTPUT_DIR
+    def __init__(self, output_dir, distros):
+        self.distros = distros
+        self.build_dir = output_dir
         self.iterate()
 
     def iterate(self):
         """Iterate through defined distros and build them."""
         for distro, distro_spec in self.distros.items():
             for version, version_spec in distro_spec['versions'].items():
-                builder = Template(self.output_dir, distro, distro_spec,
-                                   version, version_spec).builder()
+                Template(self.build_dir, distro, distro_spec,
+                         version, version_spec)
                 self.builders = distro_spec['builders']
-                self.path = builder['path']
                 self.current_dir = os.getcwd()
                 self.validate()
                 self.build()
 
     def validate(self):
         """Validate generated Packer template."""
-        os.chdir(self.path)
+        os.chdir(self.build_dir)
         validate = subprocess.Popen(['packer', 'validate', 'template.json'])
         validate.wait()
         if validate.returncode != 0:
@@ -36,7 +35,7 @@ class Build():
 
     def build(self):
         """Build generated Packer template."""
-        os.chdir(self.path)
+        os.chdir(self.build_dir)
         if 'qemu' in self.builders and 'virtualbox-iso' in self.builders:
             build = subprocess.Popen(
                 ['packer', 'build', '-parallel=false', 'template.json'])

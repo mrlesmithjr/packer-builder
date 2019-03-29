@@ -181,7 +181,8 @@ class Template():
                         '9<enter>',
                         'curl -X PUT -u {{ user `username` }}:{{ user `password` }} -H \'Content-Type: application/json\' -d \'{\"ssh_rootlogin\": true}\' http://localhost/api/v1.0/services/ssh/<enter>',
                         'curl -X PUT -u {{ user `username` }}:{{ user `password` }} -H \'Content-Type: application/json\' -d \'{\"srv_enable\": true}\' http://localhost/api/v1.0/services/services/ssh/<enter>'
-                    ]
+                    ],
+                    'shutdown_command': 'shutdown -p now',
                 }
             )
         elif self.distro == 'ubuntu':

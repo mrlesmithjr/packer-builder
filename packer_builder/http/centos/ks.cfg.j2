@@ -40,5 +40,4 @@ make
 echo "{{ password }}"|passwd --stdin {{ username }}
 echo "{{ username }}        ALL=(ALL)       NOPASSWD: ALL" >> /etc/sudoers
 sed -i -e 's/Defaults    requiretty.*/ #Defaults    requiretty/g' /etc/sudoers
-
 %end

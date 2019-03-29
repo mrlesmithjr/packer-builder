@@ -168,7 +168,7 @@ class Template():
                 {
                     'boot_command': [
                         '<enter>',
-                        '<wait10><wait5>1<enter>',
+                        '<wait30>1<enter>',
                         'y',
                         '<wait5><spacebar>o<enter>',
                         '<enter>',

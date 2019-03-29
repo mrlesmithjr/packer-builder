@@ -5,11 +5,13 @@ import jinja2
 
 
 class Template():
+    """Main Packer template execution."""
+
     def __init__(self, output_dir, distro, distro_spec, version, version_spec):
         self.script_dir = os.path.dirname(os.path.abspath(__file__))
         self.build_dir = output_dir
         self.build_scripts_dir = os.path.join(self.script_dir, 'scripts')
-        self.distro = distro
+        self.distro = distro.lower()
         self.distro_spec = distro_spec
         self.http_dir = os.path.join(self.build_dir, 'http')
         self.template = dict()
@@ -33,10 +35,11 @@ class Template():
             'iso_url': self.version_spec['iso_url'],
             'username': self.distro_spec['username'],
             'password': self.distro_spec['password'],
-            'vm_name': f'{self.distro.lower()}-{self.version}',
+            'vm_name': f'{self.distro}-{self.version}',
         }
 
     def get_builders(self):
+        """Direct builder configurations based on builder type."""
         self.template['builders'] = []
         for builder in self.distro_spec['builders']:
             self.builder = builder.lower()
@@ -66,7 +69,7 @@ class Template():
             'output_directory': f'{self.build_dir}''/{{ user `vm_name` }}-{{ build_type }}-{{ timestamp }}',
             'vm_name': '{{ user `vm_name` }}-{{ build_type }}-{{ timestamp }}'
         })
-        if 'windows' not in self.distro.lower():
+        if self.distro == 'windows':
             self.builder_spec.update({
                 'ssh_password': '{{ user `password` }}',
                 'ssh_username': '{{ user `username` }}',
@@ -79,7 +82,7 @@ class Template():
             os.makedirs(self.http_dir)
         username = self.distro_spec['username']
         password = self.distro_spec['password']
-        if self.distro.lower() == 'alpine':
+        if self.distro == 'alpine':
             if self.builder == 'qemu':
                 disk_dev = 'vda'
             else:
@@ -120,7 +123,7 @@ class Template():
                     'shutdown_command': '/sbin/poweroff',
                 }
             )
-        elif self.distro.lower() == 'centos':
+        elif self.distro == 'centos':
             bootstrap_cfg = 'ks.cfg'
             self.builder_spec.update(
                 {
@@ -132,7 +135,7 @@ class Template():
                     'shutdown_command': '/sbin/halt -h -p',
                 }
             )
-        elif self.distro.lower() == 'debian':
+        elif self.distro == 'debian':
             bootstrap_cfg = 'preseed.cfg'
             self.builder_spec.update(
                 {
@@ -147,7 +150,7 @@ class Template():
                     'shutdown_command': 'sudo /sbin/halt -h -p'
                 }
             )
-        elif self.distro.lower() == 'fedora':
+        elif self.distro == 'fedora':
             bootstrap_cfg = 'ks.cfg'
             self.builder_spec.update(
                 {
@@ -159,7 +162,7 @@ class Template():
                     'shutdown_command': '/sbin/halt -h -p',
                 }
             )
-        elif self.distro.lower() == 'ubuntu':
+        elif self.distro == 'ubuntu':
             bootstrap_cfg = 'preseed.cfg'
             self.builder_spec.update(
                 {
@@ -183,7 +186,7 @@ class Template():
                 }
             )
         j2_template_dir = os.path.join(
-            self.script_dir, 'http', self.distro.lower())
+            self.script_dir, 'http', self.distro)
         j2_template = jinja2.Environment(
             loader=jinja2.FileSystemLoader(j2_template_dir),
             trim_blocks=True)
@@ -211,15 +214,15 @@ class Template():
             'type': 'virtualbox-iso',
             'hard_drive_interface': '{{ user `disk_adapter_type` }}',
         })
-        if self.distro.lower() == 'alpine':
+        if self.distro == 'alpine':
             guest_os_type = 'Linux26_64'
-        elif self.distro.lower() == 'centos':
+        elif self.distro == 'centos':
             guest_os_type = 'RedHat_64'
-        elif self.distro.lower() == 'debian':
+        elif self.distro == 'debian':
             guest_os_type = 'Debian_64'
-        elif self.distro.lower() == 'fedora':
+        elif self.distro == 'fedora':
             guest_os_type = 'Fedora_64'
-        elif self.distro.lower() == 'ubuntu':
+        elif self.distro == 'ubuntu':
             guest_os_type = 'Ubuntu_64'
 
         self.builder_spec.update({'guest_os_type': guest_os_type})
@@ -236,22 +239,23 @@ class Template():
             },
             'vmx_remove_ethernet_interfaces': True
         })
-        if self.distro.lower() == 'alpine':
+        if self.distro == 'alpine':
             guest_os_type = 'other3xlinux-64'
-        elif self.distro.lower() == 'centos':
+        elif self.distro == 'centos':
             guest_os_type = 'centos-64'
-        elif self.distro.lower() == 'debian':
+        elif self.distro == 'debian':
             guest_os_type = 'debian8-64'
-        elif self.distro.lower() == 'fedora':
+        elif self.distro == 'fedora':
             guest_os_type = 'fedora-64'
-        elif self.distro.lower() == 'ubuntu':
+        elif self.distro == 'ubuntu':
             guest_os_type = 'ubuntu-64'
 
         self.builder_spec.update({'guest_os_type': guest_os_type})
 
     def get_provisioners(self):
+        """Direct provisioners based on distro type."""
         self.template['provisioners'] = []
-        if 'windows' in self.distro.lower():
+        if self.distro == 'windows':
             self.windows_provisioners()
         else:
             self.linux_provisioners()

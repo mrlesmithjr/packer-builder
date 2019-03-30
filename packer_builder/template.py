@@ -381,10 +381,12 @@ class Template():
             vagrant_post_proc = {
                 'compression_level': '{{ user `compression_level` }}',
                 'keep_input_artifact': True,
-                'only': ['virtualbox-iso', 'vmware-iso'],
                 'output': '{{ user `vm_name` }}-{{ build_type }}-{{ timestamp }}.box',
                 'type': 'vagrant'
             }
+            if self.distro == 'freenas':
+                vagrant_post_proc.update(
+                    {'only': ['virtualbox-iso', 'vmware-iso']})
             self.template['post-processors'].insert(1, vagrant_post_proc)
 
     def save_template(self):

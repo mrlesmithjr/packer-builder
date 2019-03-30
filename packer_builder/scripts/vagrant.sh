@@ -24,12 +24,12 @@ if [ -f /etc/vyos_build ]; then
 else
     sudo groupadd vagrant
     if [[ $os_family = "Debian" ]]; then
-      sudo useradd vagrant -g vagrant -G sudo
+      sudo useradd vagrant -g vagrant -G sudo -s /bin/bash
     elif [[ $os_family = "RedHat" ]]; then
-      sudo useradd vagrant -g vagrant -G wheel
+      sudo useradd vagrant -g vagrant -G wheel -s /bin/bash
     elif [[ $os_family = "Linux" ]]; then
       if [[ $os = "Alpine" ]]; then
-        sudo useradd vagrant -g vagrant -G wheel
+        sudo useradd vagrant -g vagrant -G wheel -s /bin/bash
       fi
     fi
     echo -e "vagrant\nvagrant" | sudo passwd vagrant

@@ -15,6 +15,9 @@ class Template():
         self.distro_spec = distro_spec
         self.http_dir = os.path.join(self.build_dir, 'http')
         self.template = dict()
+        self.vagrant_box = distro_spec.get('vagrant_box')
+        if self.vagrant_box is None:
+            self.vagrant_box = False
         self.version = version
         self.version_spec = version_spec
         self.get_vars()
@@ -26,6 +29,7 @@ class Template():
     def get_vars(self):
         """Define user specific variables."""
         self.template['variables'] = {
+            'compression_level': '6',
             'cpus': str(self.distro_spec['cpus']),
             'memory': str(self.distro_spec['memory']),
             'disk_adapter_type': self.distro_spec['disk_adapter_type'],
@@ -248,6 +252,35 @@ class Template():
             guest_os_type = 'Fedora_64'
         elif self.distro == 'freenas':
             guest_os_type = 'FreeBSD_64'
+            if self.vagrant_box:
+                self.builder_spec.update(
+                    {
+                        'vboxmanage': [
+                            [
+                                'createhd',
+                                '--format',
+                                'VDI',
+                                '--filename',
+                                'disk2.vdi',
+                                '--size',
+                                '{{ user `disk_size` }}'
+                            ],
+                            [
+                                'storageattach',
+                                '{{ .Name }}',
+                                '--storagectl',
+                                'SCSI Controller',
+                                '--port',
+                                '1',
+                                '--device',
+                                '0',
+                                '--type',
+                                'hdd',
+                                '--medium',
+                                'disk2.vdi'
+                            ]
+                        ]
+                    })
         elif self.distro == 'ubuntu':
             guest_os_type = 'Ubuntu_64'
 
@@ -275,6 +308,9 @@ class Template():
             guest_os_type = 'fedora-64'
         elif self.distro == 'freenas':
             guest_os_type = 'FreeBSD-64'
+            if self.vagrant_box:
+                self.builder_spec.update(
+                    {'disk_additional_size': ['{{ user `disk_size` }}']})
         elif self.distro == 'ubuntu':
             guest_os_type = 'ubuntu-64'
 
@@ -291,29 +327,34 @@ class Template():
             self.linux_provisioners()
 
     def freenas_provisioners(self):
+        scripts = []
+        if self.vagrant_box:
+            scripts.append(f'{self.build_scripts_dir}/freenas.sh')
         provisioner_spec = {
             'type': 'shell',
             'environment_vars': [
                 'SSH_USER={{ user `username` }}',
                 'SSH_PASS={{ user `password` }}'
             ],
-            'scripts': [
-                f'{self.build_scripts_dir}/freenas.sh'
-            ]
+            'scripts': scripts
         }
         self.template['provisioners'].append(provisioner_spec)
 
     def linux_provisioners(self):
         """Linux specific provisioners."""
+        scripts = [
+            f'{self.build_scripts_dir}/base.sh',
+            f'{self.build_scripts_dir}/virtualbox.sh',
+            f'{self.build_scripts_dir}/vmware.sh',
+            f'{self.build_scripts_dir}/cleanup.sh',
+            f'{self.build_scripts_dir}/zerodisk.sh'
+        ]
+        if self.vagrant_box:
+            scripts.insert(
+                3, f'{self.build_scripts_dir}/vagrant.sh')
         provisioner_spec = {
             'type': 'shell',
-            'scripts': [
-                f'{self.build_scripts_dir}/base.sh',
-                f'{self.build_scripts_dir}/virtualbox.sh',
-                f'{self.build_scripts_dir}/vmware.sh',
-                f'{self.build_scripts_dir}/cleanup.sh',
-                f'{self.build_scripts_dir}/zerodisk.sh'
-            ]
+            'scripts': scripts
         }
         self.template['provisioners'].append(provisioner_spec)
 
@@ -330,8 +371,21 @@ class Template():
                 'type': 'shell-local',
                 'inline': f'ovftool {vmx_file} {ovf_file}',
                 'only': ['vmware-iso']
+            },
+            {
+                'type': 'manifest',
+                'strip_path': True
             }
         ]
+        if self.vagrant_box:
+            vagrant_post_proc = {
+                'compression_level': '{{ user `compression_level` }}',
+                'keep_input_artifact': True,
+                'only': ['virtualbox-iso', 'vmware-iso'],
+                'output': '{{ user `vm_name` }}-{{ build_type }}-{{ timestamp }}.box',
+                'type': 'vagrant'
+            }
+            self.template['post-processors'].insert(1, vagrant_post_proc)
 
     def save_template(self):
         """Save generated template for building."""

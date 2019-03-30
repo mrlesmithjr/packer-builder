@@ -4,6 +4,7 @@ set -e
 set -x
 
 os="$(facter operatingsystem)"
+os_family="$(facter osfamily)"
 
 # Vagrant specific
 sudo bash -c "date > /etc/vagrant_box_build_time"
@@ -21,12 +22,20 @@ if [ -f /etc/vyos_build ]; then
     $WRAPPER save
     $WRAPPER end
 else
+    groupadd vagrant
+    if [[ $os_family = "Debian" ]]; then
+      useradd vagrant -g vagrant -G sudo
+    elif [[ $os_family = "RedHat" ]]; then
+      useradd vagrant -g vagrant -G wheel
+    elif [[ $os_family = "Linux" ]]; then
+      if [[ $os = "Alpine" ]]; then
+        useradd vagrant -g vagrant -G wheel
+      fi
+    fi
+    echo -e "vagrant\nvagrant" | passwd vagrant
     sudo mkdir -pm 700 /home/vagrant/.ssh
     sudo sh -c "curl -L https://raw.github.com/mitchellh/vagrant/master/keys/vagrant.pub -o /home/vagrant/.ssh/authorized_keys"
     sudo chmod 0600 /home/vagrant/.ssh/authorized_keys
     sudo chown -R vagrant /home/vagrant/.ssh
-fi
-# We need to do this here as our autoinst.xml does not do it for us
-if [[ $os = *openSUSE* || $os = *OpenSuSE* ]]; then
     echo "vagrant        ALL=(ALL)       NOPASSWD: ALL" >> /etc/sudoers
 fi

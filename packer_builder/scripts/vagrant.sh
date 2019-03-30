@@ -34,8 +34,8 @@ else
     fi
     echo -e "vagrant\nvagrant" | sudo passwd vagrant
     sudo mkdir -pm 700 /home/vagrant/.ssh
-    sudo sh -c "curl -L https://raw.github.com/mitchellh/vagrant/master/keys/vagrant.pub -o /home/vagrant/.ssh/authorized_keys"
+    sudo bash -c "curl -L https://raw.github.com/mitchellh/vagrant/master/keys/vagrant.pub -o /home/vagrant/.ssh/authorized_keys"
     sudo chmod 0600 /home/vagrant/.ssh/authorized_keys
     sudo chown -R vagrant /home/vagrant/.ssh
-    sudo echo "vagrant        ALL=(ALL)       NOPASSWD: ALL" >> /etc/sudoers
+    sudo bash -c "echo \"vagrant        ALL=(ALL)       NOPASSWD: ALL\" >> /etc/sudoers"
 fi

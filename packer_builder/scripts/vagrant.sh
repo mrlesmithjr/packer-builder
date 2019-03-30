@@ -32,7 +32,7 @@ else
         sudo useradd vagrant -g vagrant -G wheel
       fi
     fi
-    sudo echo -e "vagrant\nvagrant" | passwd vagrant
+    echo -e "vagrant\nvagrant" | sudo passwd vagrant
     sudo mkdir -pm 700 /home/vagrant/.ssh
     sudo sh -c "curl -L https://raw.github.com/mitchellh/vagrant/master/keys/vagrant.pub -o /home/vagrant/.ssh/authorized_keys"
     sudo chmod 0600 /home/vagrant/.ssh/authorized_keys

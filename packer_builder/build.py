@@ -32,28 +32,52 @@ class Build():
 
     def iterate(self):
         """Iterate through defined distros and build them."""
+        self.current_dir = os.getcwd()
         for distro, distro_spec in self.distros.items():
             distro_check = self.build_manifest.get(distro)
             if distro_check is None:
-                self.build_manifest[distro] = {'builds': []}
+                self.build_manifest[distro] = dict()
             if self.distro == 'all' or (self.distro != 'all' and
                                         self.distro == distro):
                 for version, version_spec in distro_spec['versions'].items():
-                    Template(self.build_dir, distro, distro_spec,
-                             version, version_spec)
-                    self.builders = distro_spec['builders']
-                    self.current_dir = os.getcwd()
-                    self.validate()
-                    build_time_epoch = time.mktime(
+                    version = str(version)
+                    version_check = self.build_manifest[distro].get(version)
+                    if version_check is None:
+                        self.build_manifest[distro][version] = {
+                            'builds': []}
+                    build_image = False
+                    current_time_epoch = time.mktime(
                         datetime.now().timetuple())
-                    build_info = {'version': str(version),
-                                  'build_time': str(build_time_epoch)}
-                    self.build_manifest[distro]['builds'].append(
-                        build_info)
-                    self.build()
-                    with open(self.build_manifest_file, 'w') as stream:
-                        stream.write(json.dumps(
-                            self.build_manifest, indent=4))
+                    last_build_time_epoch = self.build_manifest[distro][
+                        version].get('last_build_time')
+                    if last_build_time_epoch is not None:
+                        older_than_days_epoch = current_time_epoch - \
+                            (86400 * 30)
+                        older_than_days = int(
+                            (older_than_days_epoch/86400) + 25569)
+                        last_build_time = int(
+                            (float(last_build_time_epoch)/86400) + 25569)
+                        if last_build_time < older_than_days:
+                            build_image = True
+                    else:
+                        build_image = True
+                    if build_image:
+                        Template(self.build_dir, distro, distro_spec,
+                                 version, version_spec)
+                        self.validate()
+                        self.build()
+                        self.build_manifest[distro][version][
+                            'last_build_time'] = current_time_epoch
+                        self.builders = distro_spec['builders']
+                        build_info = {
+                            'builder_types': self.builders,
+                            'build_time': current_time_epoch
+                        }
+                        self.build_manifest[distro][version]['builds'].append(
+                            build_info)
+                        with open(self.build_manifest_file, 'w') as stream:
+                            stream.write(json.dumps(
+                                self.build_manifest, indent=4))
 
     def validate(self):
         """Validate generated Packer template."""

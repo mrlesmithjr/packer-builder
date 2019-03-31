@@ -34,6 +34,7 @@ class Build():
         """Iterate through defined distros and build them."""
         self.current_dir = os.getcwd()
         for distro, distro_spec in self.distros.items():
+            self.builders = distro_spec['builders']
             distro_check = self.build_manifest.get(distro)
             if distro_check is None:
                 self.build_manifest[distro] = dict()
@@ -68,7 +69,6 @@ class Build():
                         self.build()
                         self.build_manifest[distro][version][
                             'last_build_time'] = current_time_epoch
-                        self.builders = distro_spec['builders']
                         build_info = {
                             'builder_types': self.builders,
                             'build_time': current_time_epoch

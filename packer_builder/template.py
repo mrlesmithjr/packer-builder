@@ -219,7 +219,8 @@ class Template():
                 loader=jinja2.FileSystemLoader(j2_template_dir),
                 trim_blocks=True)
             bootstrap_template = j2_template.get_template(
-                bootstrap_cfg + '.j2').render(username=username, password=password)
+                bootstrap_cfg + '.j2').render(username=username,
+                                              password=password)
             bootstrap_file = os.path.join(self.http_dir, bootstrap_cfg)
             if os.path.isfile(bootstrap_file):
                 os.remove(bootstrap_file)

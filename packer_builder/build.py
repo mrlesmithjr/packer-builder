@@ -16,6 +16,7 @@ class Build():
         self.build_dir = args.outputdir
         self.build_manifest_file = os.path.join(
             self.build_dir, 'packer-builder.json')
+        self.num_days = args.numdays
         if args.distro is not None:
             self.distro = args.distro
         else:
@@ -53,7 +54,7 @@ class Build():
                         version].get('last_build_time')
                     if last_build_time_epoch is not None:
                         older_than_days_epoch = current_time_epoch - \
-                            (86400 * 30)
+                            (86400 * self.num_days)
                         older_than_days = int(
                             (older_than_days_epoch/86400) + 25569)
                         last_build_time = int(

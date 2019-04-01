@@ -9,6 +9,9 @@ def get_args():
     parser.add_argument('-d', '--distro', help='Only build distro.')
     parser.add_argument('-f', '--file', help='Path to distro.',
                         default='distros.yml', required=False)
+    parser.add_argument('-n', '--numdays',
+                        help='Define number of days since last build.',
+                        default=30)
     parser.add_argument('-o', '--outputdir',
                         help='Define path to save builds.')
     args = parser.parse_args()

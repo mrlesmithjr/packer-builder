@@ -5,9 +5,7 @@
 ### Help
 
 ```bash
-python -m packer_builder --help
-...
-usage: __main__.py [-h] [-d DISTRO] [-f FILE] -o OUTPUTDIR
+usage: __main__.py [-h] [-d DISTRO] [-f FILE] [-n NUMDAYS] [-o OUTPUTDIR]
                    {build,list-distros}
 
 Packer template builder.
@@ -20,6 +18,8 @@ optional arguments:
   -d DISTRO, --distro DISTRO
                         Only build distro.
   -f FILE, --file FILE  Path to distro.
+  -n NUMDAYS, --numdays NUMDAYS
+                        Define number of days since last build.
   -o OUTPUTDIR, --outputdir OUTPUTDIR
                         Define path to save builds.
 ```

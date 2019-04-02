@@ -124,6 +124,7 @@ class Template():
                         'umount /mnt<enter>',
                         'reboot<enter>'
                     ],
+                    'boot_wait': '30s',
                     'shutdown_command': '/sbin/poweroff',
                 }
             )
@@ -136,6 +137,7 @@ class Template():
                         'inst.ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/'f'{bootstrap_cfg}',
                         '<enter><wait>'
                     ],
+                    'boot_wait': '30s',
                     'shutdown_command': '/sbin/halt -h -p',
                 }
             )
@@ -151,6 +153,7 @@ class Template():
                         ' url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/'f'{bootstrap_cfg}',
                         ' <wait><enter>'
                     ],
+                    'boot_wait': '30s',
                     'shutdown_command': 'sudo /sbin/halt -h -p'
                 }
             )
@@ -163,6 +166,7 @@ class Template():
                         'inst.ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/'f'{bootstrap_cfg}',
                         '<enter><wait>'
                     ],
+                    'boot_wait': '30s',
                     'shutdown_command': '/sbin/halt -h -p',
                 }
             )
@@ -186,6 +190,7 @@ class Template():
                         'curl -X PUT -u {{ user `username` }}:{{ user `password` }} -H \'Content-Type: application/json\' -d \'{\"ssh_rootlogin\": true}\' http://localhost/api/v1.0/services/ssh/<enter>',
                         'curl -X PUT -u {{ user `username` }}:{{ user `password` }} -H \'Content-Type: application/json\' -d \'{\"srv_enable\": true}\' http://localhost/api/v1.0/services/services/ssh/<enter>'
                     ],
+                    'boot_wait': '30s',
                     'shutdown_command': 'shutdown -p now',
                 }
             )
@@ -209,6 +214,7 @@ class Template():
                         ' url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/'f'{bootstrap_cfg}',
                         ' <wait><enter>'
                     ],
+                    'boot_wait': '30s',
                     'shutdown_command': 'sudo /sbin/halt -h -p'
                 }
             )

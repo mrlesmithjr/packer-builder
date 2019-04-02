@@ -2,6 +2,7 @@
 import os
 from datetime import datetime
 import time
+import shutil
 import subprocess
 import sys
 import json
@@ -92,13 +93,33 @@ class Build():
     def build(self):
         """Build generated Packer template."""
         os.chdir(self.build_dir)
+        # We need to account for QEMU and VirtualBox not being able to execute
+        # at the same time.
         if 'qemu' in self.builders and 'virtualbox-iso' in self.builders:
-            build = subprocess.Popen(
-                ['packer', 'build', '-parallel=false', 'template.json'])
+            # Check to ensure QEMU is installed. This may not always be the
+            # case. If not found installed we will skip the QEMU builder. QEMU
+            # will more than likely be the one off use case.
+            qemu_check = shutil.which('qemu-system-x86_64')
+            if qemu_check is not None:
+                build_commands = ['packer', 'build',
+                                  '-only=qemu', 'template.json']
+                self.process_build(build_commands)
+                build_commands = ['packer', 'build',
+                                  '-except=qemu', 'template.json']
+                self.process_build(build_commands)
+            else:
+                print('QEMU/KVM not installed. Skipping....')
+                build_commands = ['packer', 'build',
+                                  '-except=qemu', 'template.json']
+                self.process_build(build_commands)
         else:
-            build = subprocess.Popen(
-                ['packer', 'build', 'template.json'])
+            build_commands = ['packer', 'build', 'template.json']
+            self.process_build(build_commands)
+        os.chdir(self.current_dir)
+
+    def process_build(self, build_commands):
+        """Process build based on commands passed."""
+        build = subprocess.Popen(build_commands)
         build.wait()
         if build.returncode != 0:
             sys.exit(1)
-        os.chdir(self.current_dir)

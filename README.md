@@ -5,10 +5,12 @@
 ### Help
 
 ```bash
+python -m packer_builder --help
+...
 usage: __main__.py [-h] [-d DISTRO] [-f FILE] [-n NUMDAYS] [-o OUTPUTDIR]
                    {build,list-distros}
 
-Packer template builder.
+Packer builder.
 
 positional arguments:
   {build,list-distros}
@@ -16,7 +18,7 @@ positional arguments:
 optional arguments:
   -h, --help            show this help message and exit
   -d DISTRO, --distro DISTRO
-                        Only build distro.
+                        Only build specific distro.
   -f FILE, --file FILE  Path to distro.
   -n NUMDAYS, --numdays NUMDAYS
                         Define number of days since last build.

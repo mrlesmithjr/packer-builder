@@ -1,6 +1,7 @@
 """Generates the Packer build template."""
 import os
 import json
+from sys import platform
 import jinja2
 
 
@@ -236,8 +237,18 @@ class Template():
 
     def qemu_builder(self):
         """Qemu specific builder specs."""
+
+        # Check which platform QEMU is running on to set accelerator correctly
+        # https://www.packer.io/docs/builders/qemu.html#accelerator
+        if platform in ('linux', 'linux2'):
+            accelerator = 'kvm'
+        elif platform == "darwin":
+            accelerator = 'hvf'
+        else:
+            accelerator = 'none'
+
         self.builder_spec.update({
-            'accelerator': 'kvm',
+            'accelerator': accelerator,
             'type': 'qemu',
             'disk_interface': 'virtio',
             'format': 'qcow2',

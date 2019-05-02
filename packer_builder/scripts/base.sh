@@ -134,7 +134,12 @@ if [[ $os_family = "Debian" || $os = "Debian" ]]; then
 
         elif [[ $os = "Fedora" ]]; then
         if [[ $os_version_id -ge 22 ]]; then
+            if [[ $os_version_id -lt 30 ]]; then
             sudo dnf -y install python-devel python-dnf
+        else
+                # initscripts should be removed at some point
+                sudo dnf -y install initscripts python-devel python3-dnf
+            fi
         else
             sudo dnf -y install python-devel
         fi

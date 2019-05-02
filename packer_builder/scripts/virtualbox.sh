@@ -7,6 +7,9 @@ os_family="$(facter osfamily)"
 os_release="$(facter operatingsystemrelease)"
 os_release_major="$(facter operatingsystemrelease | awk -F. '{ print $1 }')"
 
+# Virtualbox test guest additions for problematic default guest additions
+TEST_GUEST_ADDITIONS="VBoxGuestAdditions_6.0.7-130129.iso"
+
 if [ "$PACKER_BUILDER_TYPE" != "virtualbox-iso" ]; then
     exit 0
 fi
@@ -43,7 +46,6 @@ if [[ $os_family = "Debian" || $os = "Debian" ]]; then
         sudo dnf -y groupinstall "Development Tools"
         if [[ $os_release_major -ge 28 ]]; then
             sudo dnf -y remove virtualbox-guest-additions
-            TEST_GUEST_ADDITIONS="VBoxGuestAdditions_6.0.97-128852.iso"
             sudo rm -rf $HOME/VBoxGuestAdditions*.iso
             wget https://www.virtualbox.org/download/testcase/$TEST_GUEST_ADDITIONS -O $HOME/$TEST_GUEST_ADDITIONS
         fi
@@ -53,7 +55,6 @@ if [[ $os_family = "Debian" || $os = "Debian" ]]; then
         sudo yum -y groupinstall "Development Tools"
     fi
     if [ -f /etc/virtualbox_desktop ] && [[ "$os" = "CentOS" ]]; then
-        TEST_GUEST_ADDITIONS="VBoxGuestAdditions_6.0.97-128852.iso"
         sudo rm -rf $HOME/VBoxGuestAdditions*.iso
         wget https://www.virtualbox.org/download/testcase/$TEST_GUEST_ADDITIONS -O $HOME/$TEST_GUEST_ADDITIONS
     fi

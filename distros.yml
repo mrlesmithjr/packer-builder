@@ -80,6 +80,10 @@ Fedora:
       iso_checksum: aa7fb0e6e5b71774ebdaab0dae76bdd9246a5bc7aedc28b7f1103aaaf9750654
       iso_checksum_type: sha256
       iso_url: http://download.fedoraproject.org/pub/fedora/linux/releases/29/Server/x86_64/iso/Fedora-Server-netinst-x86_64-29-1.2.iso
+    30:
+      iso_checksum: 5e4eac4566d8c572bfb3bcf54b7d6c82006ec3c6c882a2c9235c6d3494d7b100
+      iso_checksum_type: sha256
+      iso_url: http://fedora.mirrors.pair.com/linux/releases/30/Server/x86_64/iso/Fedora-Server-netinst-x86_64-30-1.2.iso
 FreeNAS:
   builders:
     - qemu

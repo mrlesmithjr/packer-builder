@@ -2,12 +2,11 @@
 import os
 from datetime import datetime
 import time
-import shutil
 import subprocess
 import sys
 import json
 from .template import Template
-
+from shutil import which
 
 class Build():
     """Main builder process."""
@@ -22,6 +21,10 @@ class Build():
             self.distro = args.distro
         else:
             self.distro = 'all'
+        if args.builder is not None:
+            self.builder = args.builder
+        else:
+            self.builder = 'all'
         self.load_build_manifest()
         self.iterate()
 
@@ -93,28 +96,47 @@ class Build():
     def build(self):
         """Build generated Packer template."""
         os.chdir(self.build_dir)
-        # We need to account for QEMU and VirtualBox not being able to execute
-        # at the same time.
-        if 'qemu' in self.builders and 'virtualbox-iso' in self.builders:
-            # Check to ensure QEMU is installed. This may not always be the
-            # case. If not found installed we will skip the QEMU builder. QEMU
-            # will more than likely be the one off use case.
-            qemu_check = shutil.which('qemu-system-x86_64')
-            if qemu_check is not None:
-                build_commands = ['packer', 'build',
-                                  '-only=qemu', 'template.json']
-                self.process_build(build_commands)
-                build_commands = ['packer', 'build',
-                                  '-except=qemu', 'template.json']
-                self.process_build(build_commands)
+        # Check which of the defined builders are available and only launch those.
+        # Values in the dict are: "builder-name" : ["executable", "names"]
+        builder_defs = {
+            "vmware-iso": [
+                "vmware",
+                "vmplayer",
+            ],
+            "virtualbox-iso": [
+                "virtualbox",
+            ],
+            "qemu": [
+                "qemu-system-x86_64",
+            ],
+        }
+        builders_found = [b if which(builder_exec) else None
+            for b, builder_execs in builder_defs.items()
+            for builder_exec in builder_execs]
+        if self.builder != 'all':
+            if self.builder not in builders_found:
+                print("Builder {0} not installed.".format(self.builder))
+                sys.exit(1)
+            elif self.builder not in self.builders:
+                print("Builder {0} is not defined.".format(self.builder))
+                sys.exit(1)
             else:
-                print('QEMU/KVM not installed. Skipping....')
-                build_commands = ['packer', 'build',
-                                  '-except=qemu', 'template.json']
-                self.process_build(build_commands)
+                builders_avail = set(self.builder.split()) & set(self.builders) & set(builders_found)
         else:
-            build_commands = ['packer', 'build', 'template.json']
+            builders_avail = set(self.builders) & set(builders_found)
+        # We need to account for QEMU and VirtualBox not being able to execute
+        # at the same time. If found installed QEMU will run separately. QEMU
+        # will more than likely be the one off use case.
+        if 'qemu' in builders_avail:
+            build_commands = ['packer', 'build',
+                            '-only=qemu', 'template.json']
             self.process_build(build_commands)
+            builders_avail.remove('qemu')
+        # Now run everything else
+        build_commands = ['packer', 'build', 
+                        '-only={}'.format(','.join(builders_avail)),
+                        'template.json']
+        self.process_build(build_commands)
         os.chdir(self.current_dir)
 
     def process_build(self, build_commands):

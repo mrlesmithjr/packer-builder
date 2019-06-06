@@ -245,7 +245,8 @@ class Template():
         if platform in ('linux', 'linux2'):
             if which('kvm-ok'):
                 process = subprocess.Popen(["kvm-ok"])
-                if process.returncode = 0:
+                process.wait()
+                if process.returncode == 0:
                     accelerator = 'kvm'
                 else:
                     accelerator = 'tcg'

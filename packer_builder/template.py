@@ -1,6 +1,8 @@
 """Generates the Packer build template."""
 import os
 import json
+import subprocess
+from shutil import which
 from sys import platform
 import jinja2
 
@@ -241,7 +243,21 @@ class Template():
         # Check which platform QEMU is running on to set accelerator correctly
         # https://www.packer.io/docs/builders/qemu.html#accelerator
         if platform in ('linux', 'linux2'):
-            accelerator = 'kvm'
+            if which('kvm-ok'):
+                process = subprocess.Popen(["kvm-ok"])
+                process.wait()
+                if process.returncode == 0:
+                    accelerator = 'kvm'
+                else:
+                    accelerator = 'tcg'
+            else:
+                with open('/proc/cpuinfo') as cpuinfo:
+                    if 'vmx' in cpuinfo.read():
+                        accelerator = 'kvm'
+                    elif 'svm' in cpuinfo.read():
+                        accelerator = 'kvm'
+                    else:
+                        accelerator = 'tcg'
         elif platform == "darwin":
             accelerator = 'hvf'
         else:

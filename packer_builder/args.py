@@ -5,7 +5,9 @@ import argparse
 def get_args():
     """Available command line arguments to pass."""
     parser = argparse.ArgumentParser(description="Packer builder.")
-    parser.add_argument('action', choices=['build', 'list-distros', 'update-metadata'])
+    parser.add_argument('action', choices=[
+                        'build', 'generate-templates', 'list-distros',
+                        'update-metadata'])
     parser.add_argument('-d', '--distro', help='Only build specific distro.')
     parser.add_argument('-b', '--builder', help='Only use specific builder.')
     parser.add_argument(
@@ -16,6 +18,7 @@ def get_args():
     parser.add_argument('-o', '--outputdir',
                         help='Define path to save builds.')
     args = parser.parse_args()
-    if args.action == 'build' and args.outputdir is None:
+    if (args.action in ['build', 'generate-templates'] and
+            args.outputdir is None):
         parser.error('--outputdir is REQUIRED!')
     return args

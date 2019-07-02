@@ -31,3 +31,18 @@ optional arguments:
 ```bash
 python -m packer_builder build -o ~/projects/packer/builds
 ```
+
+## vagrant-libvirt plugin on macOS
+
+```bash
+brew install libiconv gcc libvirt
+```
+
+```bash
+RV=$(/opt/vagrant/embedded/bin/ruby --version | awk '{ print $2 }'| awk '{ split($0, a, "p"); print a[1] }')
+CONFIGURE_ARGS='with-ldflags=-L/opt/vagrant/embedded/lib with-libvirt-include=/usr/local/include/libvirt with-libvirt-lib=/usr/local/lib' \
+GEM_HOME=~/.vagrant.d/gems/$RV \
+GEM_PATH=$GEM_HOME:/opt/vagrant/embedded/gems \
+PATH=/opt/vagrant/embedded/bin:$PATH \
+vagrant plugin install vagrant-libvirt
+```

@@ -5,15 +5,19 @@ import time
 import subprocess
 import sys
 import json
-from .template import Template
 from shutil import which
+from .template import Template
+from .logger import get_logger
+
 
 class Build():
     """Main builder process."""
 
     def __init__(self, args, distros):
+        self.logger = get_logger(__name__)
         self.distros = distros
         self.build_dir = args.outputdir
+        self.logger.debug('Build dir: %s', self.build_dir)
         self.build_manifest_file = os.path.join(
             self.build_dir, 'packer-builder.json')
         self.num_days = args.numdays
@@ -31,6 +35,8 @@ class Build():
     def load_build_manifest(self):
         if os.path.isfile(self.build_manifest_file):
             with open(self.build_manifest_file, 'r') as stream:
+                self.logger.debug(
+                    'Loading build manifest: %s', self.build_manifest_file)
                 self.build_manifest = json.load(stream)
         else:
             self.build_manifest = dict()
@@ -38,9 +44,13 @@ class Build():
     def iterate(self):
         """Iterate through defined distros and build them."""
         self.current_dir = os.getcwd()
+        self.logger.debug('Current directory: %s', self.current_dir)
         for distro, distro_spec in self.distros.items():
+            self.logger.debug('Distro: %s', distro)
+            self.logger.debug('Distro spec: %s', distro_spec)
             self.builders = distro_spec['builders']
             distro_check = self.build_manifest.get(distro)
+            self.logger.debug('Distro check: %s', distro_check)
             if distro_check is None:
                 self.build_manifest[distro] = dict()
             if self.distro == 'all' or (self.distro != 'all' and
@@ -48,6 +58,8 @@ class Build():
                 for version, version_spec in distro_spec['versions'].items():
                     version = str(version)
                     version_check = self.build_manifest[distro].get(version)
+                    self.logger.debug('Version %s check: %s',
+                                      version, version_check)
                     if version_check is None:
                         self.build_manifest[distro][version] = {
                             'builds': []}
@@ -67,6 +79,7 @@ class Build():
                             build_image = True
                     else:
                         build_image = True
+                    self.logger.debug('Build image: %s', build_image)
                     if build_image:
                         Template(self.build_dir, distro, distro_spec,
                                  version, version_spec)
@@ -81,6 +94,9 @@ class Build():
                         self.build_manifest[distro][version]['builds'].append(
                             build_info)
                         with open(self.build_manifest_file, 'w') as stream:
+                            self.logger.debug(
+                                'Saving build manifest: %s',
+                                self.build_manifest_file)
                             stream.write(json.dumps(
                                 self.build_manifest, indent=4))
 
@@ -89,6 +105,8 @@ class Build():
         os.chdir(self.build_dir)
         validate = subprocess.Popen(['packer', 'validate', 'template.json'])
         validate.wait()
+        self.logger.debug(
+            'Template validation returncode: %s', validate.returncode)
         if validate.returncode != 0:
             sys.exit(1)
         os.chdir(self.current_dir)
@@ -111,8 +129,9 @@ class Build():
             ],
         }
         builders_found = [b if which(builder_exec) else None
-            for b, builder_execs in builder_defs.items()
-            for builder_exec in builder_execs]
+                          for b, builder_execs in builder_defs.items()
+                          for builder_exec in builder_execs]
+        self.logger.debug('Builders found: %s', builders_found)
         if self.builder != 'all':
             if self.builder not in builders_found:
                 print("Builder {0} not installed.".format(self.builder))
@@ -121,21 +140,25 @@ class Build():
                 print("Builder {0} is not defined.".format(self.builder))
                 sys.exit(1)
             else:
-                builders_avail = set(self.builder.split()) & set(self.builders) & set(builders_found)
+                builders_avail = set(self.builder.split()) & set(
+                    self.builders) & set(builders_found)
         else:
             builders_avail = set(self.builders) & set(builders_found)
+        self.logger.debug('Builders avail: %s', builders_avail)
         # We need to account for QEMU and VirtualBox not being able to execute
         # at the same time. If found installed QEMU will run separately. QEMU
         # will more than likely be the one off use case.
         if 'qemu' in builders_avail:
             build_commands = ['packer', 'build',
-                            '-only=qemu', 'template.json']
+                              '-only=qemu', 'template.json']
+            self.logger.debug('Build commands: %s', build_commands)
             self.process_build(build_commands)
             builders_avail.remove('qemu')
         # Now run everything else
-        build_commands = ['packer', 'build', 
-                        '-only={}'.format(','.join(builders_avail)),
-                        'template.json']
+        build_commands = ['packer', 'build',
+                          '-only={}'.format(','.join(builders_avail)),
+                          'template.json']
+        self.logger.debug('Build commands: %s', build_commands)
         self.process_build(build_commands)
         os.chdir(self.current_dir)
 
@@ -143,5 +166,6 @@ class Build():
         """Process build based on commands passed."""
         build = subprocess.Popen(build_commands)
         build.wait()
+        self.logger.debug('Build returncode: %s', build.returncode)
         if build.returncode != 0:
             sys.exit(1)

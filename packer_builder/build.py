@@ -5,8 +5,9 @@ import time
 import subprocess
 import sys
 import json
-from .template import Template
 from shutil import which
+from packer_builder.template import Template
+
 
 class Build():
     """Main builder process."""
@@ -111,8 +112,8 @@ class Build():
             ],
         }
         builders_found = [b if which(builder_exec) else None
-            for b, builder_execs in builder_defs.items()
-            for builder_exec in builder_execs]
+                          for b, builder_execs in builder_defs.items()
+                          for builder_exec in builder_execs]
         if self.builder != 'all':
             if self.builder not in builders_found:
                 print("Builder {0} not installed.".format(self.builder))
@@ -121,7 +122,8 @@ class Build():
                 print("Builder {0} is not defined.".format(self.builder))
                 sys.exit(1)
             else:
-                builders_avail = set(self.builder.split()) & set(self.builders) & set(builders_found)
+                builders_avail = set(self.builder.split()) & set(
+                    self.builders) & set(builders_found)
         else:
             builders_avail = set(self.builders) & set(builders_found)
         # We need to account for QEMU and VirtualBox not being able to execute
@@ -129,13 +131,13 @@ class Build():
         # will more than likely be the one off use case.
         if 'qemu' in builders_avail:
             build_commands = ['packer', 'build',
-                            '-only=qemu', 'template.json']
+                              '-only=qemu', 'template.json']
             self.process_build(build_commands)
             builders_avail.remove('qemu')
         # Now run everything else
-        build_commands = ['packer', 'build', 
-                        '-only={}'.format(','.join(builders_avail)),
-                        'template.json']
+        build_commands = ['packer', 'build',
+                          '-only={}'.format(','.join(builders_avail)),
+                          'template.json']
         self.process_build(build_commands)
         os.chdir(self.current_dir)
 

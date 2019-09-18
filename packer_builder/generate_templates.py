@@ -2,12 +2,14 @@ import os
 import shutil
 from packer_builder.template import Template
 from packer_builder.build import Build
+from packer_builder.logger import get_logger
 
 
 class GenerateTemplates():
     '''Generate Packer templates without building.'''
 
     def __init__(self, args, distros):
+        self.logger = get_logger(__name__)
         self.distros = distros
         self.build_dir = args.outputdir
         self.current_dir = os.getcwd()

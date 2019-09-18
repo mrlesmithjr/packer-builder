@@ -83,11 +83,11 @@ Fedora:
     "28":
       iso_checksum: ea1efdc692356b3346326f82e2f468903e8da59324fdee8b10eac4fea83f23fe
       iso_checksum_type: sha256
-      iso_url: https://mirror.us.leaseweb.net/fedora/linux/releases/28/Server/x86_64/iso/Fedora-Server-netinst-x86_64-28-1.1.iso
+      iso_url: https://archives.fedoraproject.org/pub/archive/fedora/linux/releases/28/Server/x86_64/iso/Fedora-Server-netinst-x86_64-28-1.1.iso
     "29":
       iso_checksum: aa7fb0e6e5b71774ebdaab0dae76bdd9246a5bc7aedc28b7f1103aaaf9750654
       iso_checksum_type: sha256
-      iso_url: http://download.fedoraproject.org/pub/fedora/linux/releases/29/Server/x86_64/iso/Fedora-Server-netinst-x86_64-29-1.2.iso
+      iso_url: https://archives.fedoraproject.org/pub/archive/fedora/linux/releases/29/Server/x86_64/iso/Fedora-Server-netinst-x86_64-29-1.2.iso
     "30":
       iso_checksum: 5e4eac4566d8c572bfb3bcf54b7d6c82006ec3c6c882a2c9235c6d3494d7b100
       iso_checksum_type: sha256

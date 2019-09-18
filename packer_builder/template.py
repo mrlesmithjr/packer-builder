@@ -100,7 +100,7 @@ class Template():
                     'boot_command': [
                         'root<enter><wait><wait><wait>',
                         'ifconfig eth0 up && udhcpc -i eth0<enter><wait10>',
-                        'wget http://{{ .HTTPIP }}:{{ .HTTPPort }}/answers<enter><wait>',
+                        'wget http://{{ .HTTPIP }}:{{ .HTTPPort }}/'f'{self.distro}-{self.version}-answers<enter><wait>',
                         'sed -i \'s/dev_replace/'f'{disk_dev}''/g\' $PWD/answers<enter>',
                         'setup-alpine -f $PWD/answers<enter><wait5>',
                         '{{ user `password` }}<enter><wait>',
@@ -137,7 +137,7 @@ class Template():
                 {
                     'boot_command': [
                         '<tab> inst.text ',
-                        'inst.ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/'f'{bootstrap_cfg}',
+                        'inst.ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/'f'{self.distro}-{self.version}-ks.cfg',
                         '<enter><wait>'
                     ],
                     'boot_wait': '30s',
@@ -153,7 +153,7 @@ class Template():
                         'install<wait>',
                         ' auto=true',
                         ' priority=critical',
-                        ' url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/'f'{bootstrap_cfg}',
+                        ' url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/'f'{self.distro}-{self.version}-{bootstrap_cfg}',
                         ' <wait><enter>'
                     ],
                     'boot_wait': '30s',
@@ -166,7 +166,7 @@ class Template():
                 {
                     'boot_command': [
                         '<tab> inst.text ',
-                        'inst.ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/'f'{bootstrap_cfg}',
+                        'inst.ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/'f'{self.distro}-{self.version}-{bootstrap_cfg}',
                         '<enter><wait>'
                     ],
                     'boot_wait': '30s',
@@ -214,7 +214,7 @@ class Template():
                         ' initrd=/install/initrd.gz',
                         ' auto=true',
                         ' priority=critical',
-                        ' url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/'f'{bootstrap_cfg}',
+                        ' url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/'f'{self.distro}-{self.version}-{bootstrap_cfg}',
                         ' <wait><enter>'
                     ],
                     'boot_wait': '30s',
@@ -230,7 +230,8 @@ class Template():
             bootstrap_template = j2_template.get_template(
                 bootstrap_cfg + '.j2').render(username=username,
                                               password=password)
-            bootstrap_file = os.path.join(self.http_dir, bootstrap_cfg)
+            bootstrap_file = os.path.join(self.http_dir,
+                                          f'{self.distro}-{self.version}-{bootstrap_cfg}')
             if os.path.isfile(bootstrap_file):
                 os.remove(bootstrap_file)
             with open(bootstrap_file, 'w') as bootstrap_cfg:

@@ -27,3 +27,6 @@ jobs:
           unzip packer_1.4.3_linux_amd64.zip
           sudo mv packer /usr/local/bin
           packer --version
+      - name: Generate Packer Templates
+        run: |
+          python -m packer_builder generate-templates --outputdir ~/projects/packer

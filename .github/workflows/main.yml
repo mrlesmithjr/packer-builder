@@ -19,4 +19,4 @@ jobs:
         pip install -r requirements-dev.txt
     - name: Lint with pylint
       run: |
-        pylint packer_builder/**/*.py
+        pylint **/*.py

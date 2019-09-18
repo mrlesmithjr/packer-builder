@@ -6,8 +6,8 @@ import subprocess
 import sys
 import json
 from shutil import which
-from .template import Template
-from .logger import get_logger
+from packer_builder.template import Template
+from packer_builder.logger import get_logger
 
 
 class Build():

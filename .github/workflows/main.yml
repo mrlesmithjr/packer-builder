@@ -20,13 +20,15 @@ jobs:
         run: |
           pylint **/*.py
       - name: Install Packer
+        env:
+          PACKER_VERSION: 1.4.3
         run: |
           sudo apt-get update
           sudo apt-get install -y unzip wget
-          wget https://releases.hashicorp.com/packer/1.4.3/packer_1.4.3_linux_amd64.zip
-          unzip packer_1.4.3_linux_amd64.zip
+          wget https://releases.hashicorp.com/packer/${PACKER_VERSION}/packer_${PACKER_VERSION}_linux_amd64.zip
+          unzip packer_${PACKER_VERSION}_linux_amd64.zip
           sudo mv packer /usr/local/bin
-          packer --version
+          echo "Packer Version: $(packer --version)"
       - name: Generate Packer Templates
         run: |
           python -m packer_builder generate-templates --outputdir ~/projects/packer

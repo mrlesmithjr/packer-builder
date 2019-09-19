@@ -123,6 +123,7 @@ class Build():
             "vmware-iso": [
                 "vmware",
                 "vmplayer",
+                "vmware-vmx"
             ],
             "virtualbox-iso": [
                 "virtualbox",

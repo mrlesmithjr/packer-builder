@@ -6,8 +6,8 @@ def get_args():
     """Available command line arguments to pass."""
     parser = argparse.ArgumentParser(description="Packer builder.")
     parser.add_argument('action', choices=[
-                        'build', 'generate-templates', 'list-distros',
-                        'update-metadata'])
+        'build', 'generate-templates', 'list-distros',
+        'update-metadata'])
     parser.add_argument('-d', '--distro', help='Only build specific distro.')
     parser.add_argument('-b', '--builder', help='Only use specific builder.')
     parser.add_argument(

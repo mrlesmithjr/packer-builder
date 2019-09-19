@@ -7,6 +7,8 @@ from sys import platform
 import jinja2
 
 
+# pylint: disable=too-many-arguments
+# pylint: disable=too-many-instance-attributes
 class Template():
     """Main Packer template execution."""
 
@@ -62,6 +64,7 @@ class Template():
 
             self.template['builders'].append(self.builder_spec)
 
+# pylint: disable=line-too-long
     def common_builder(self):
         """Common builder specs."""
         self.builder_spec.update({
@@ -221,6 +224,7 @@ class Template():
                     'shutdown_command': 'sudo /sbin/halt -h -p'
                 }
             )
+# pylint: enable=line-too-long
         if bootstrap_cfg is not None:
             j2_template_dir = os.path.join(
                 self.script_dir, 'http', self.distro)
@@ -362,6 +366,7 @@ class Template():
             self.linux_provisioners()
 
     def freenas_provisioners(self):
+        """FreeNAS specific provisioners."""
         scripts = []
         if self.vagrant_box:
             scripts.append(f'{self.build_scripts_dir}/freenas.sh')
@@ -395,7 +400,6 @@ class Template():
 
     def windows_provisioners(self):
         """Windows specific provisioners."""
-        pass
 
     def get_post_processors(self):
         """Post processors for builds."""

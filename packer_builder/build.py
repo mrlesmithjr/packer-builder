@@ -10,6 +10,7 @@ from packer_builder.template import Template
 from packer_builder.logger import get_logger
 
 
+# pylint: disable=too-many-instance-attributes
 class Build():
     """Main builder process."""
 
@@ -33,6 +34,7 @@ class Build():
         self.iterate()
 
     def load_build_manifest(self):
+        """Load up existing build manifest, otherwise create one."""
         if os.path.isfile(self.build_manifest_file):
             with open(self.build_manifest_file, 'r') as stream:
                 self.logger.debug(
@@ -41,6 +43,7 @@ class Build():
         else:
             self.build_manifest = dict()
 
+# pylint: disable=too-many-locals
     def iterate(self):
         """Iterate through defined distros and build them."""
         self.current_dir = os.getcwd()

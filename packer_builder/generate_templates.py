@@ -1,3 +1,4 @@
+"""Generate Packer templates for offline execution/review."""
 import os
 import shutil
 from packer_builder.template import Template
@@ -5,8 +6,9 @@ from packer_builder.build import Build
 from packer_builder.logger import get_logger
 
 
+# pylint: disable=too-few-public-methods
 class GenerateTemplates():
-    '''Generate Packer templates without building.'''
+    """Generate Packer templates without building."""
 
     def __init__(self, args, distros):
         self.logger = get_logger(__name__)
@@ -16,7 +18,7 @@ class GenerateTemplates():
         self.generate()
 
     def generate(self):
-        '''Generate templates and rename them into the defined output dir.'''
+        """Generate templates and rename them into the defined output dir."""
 
         # Iterate through defined distros
         for distro, distro_spec in self.distros.items():

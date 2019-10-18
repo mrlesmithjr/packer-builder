@@ -12,13 +12,15 @@ import jinja2
 class Template():
     """Main Packer template execution."""
 
-    def __init__(self, output_dir, distro, distro_spec, version, version_spec):
+    def __init__(self, output_dir, password_override,
+                 distro, distro_spec, version, version_spec):
         self.script_dir = os.path.dirname(os.path.abspath(__file__))
         self.build_dir = output_dir
         self.build_scripts_dir = os.path.join(self.script_dir, 'scripts')
         self.distro = distro.lower()
         self.distro_spec = distro_spec
         self.http_dir = os.path.join(self.build_dir, 'http')
+        self.password_override = password_override
         self.template = dict()
         self.vagrant_box = distro_spec.get('vagrant_box')
         if self.vagrant_box is None:
@@ -46,6 +48,8 @@ class Template():
             'password': self.distro_spec['password'],
             'vm_name': f'{self.distro}-{self.version}',
         }
+        if self.password_override is not None:
+            self.template['variables']['password'] = self.password_override
 
     def get_builders(self):
         """Direct builder configurations based on builder type."""

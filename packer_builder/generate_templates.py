@@ -14,6 +14,7 @@ class GenerateTemplates():
         self.logger = get_logger(__name__)
         self.distros = distros
         self.build_dir = args.outputdir
+        self.password_override = args.password
         self.current_dir = os.getcwd()
         self.generate()
 
@@ -26,8 +27,8 @@ class GenerateTemplates():
             for version, version_spec in distro_spec['versions'].items():
                 version = str(version)
                 # Generate the template
-                Template(self.build_dir, distro, distro_spec,
-                         version, version_spec)
+                Template(self.build_dir, self.password_override,
+                         distro, distro_spec, version, version_spec)
                 # Validate the generated template
                 Build.validate(self)
                 generated_template = os.path.join(

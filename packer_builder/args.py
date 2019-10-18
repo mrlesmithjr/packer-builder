@@ -17,6 +17,8 @@ def get_args():
                         default=30)
     parser.add_argument('-o', '--outputdir',
                         help='Define path to save builds.')
+    parser.add_argument('-p', '--password',
+                        help='Define default password to override distros.yml')
     args = parser.parse_args()
     if (args.action in ['build', 'generate-templates'] and
             args.outputdir is None):

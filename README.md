@@ -1,7 +1,6 @@
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
-
 - [packer-builder](#packer-builder)
   - [Usage](#usage)
     - [Help](#help)
@@ -29,7 +28,7 @@ Using Packer **SHOULD** be straight forward and in most cases, it is. Packer bui
 python -m packer_builder --help
 ...
 usage: __main__.py [-h] [-d DISTRO] [-b BUILDER] [-f FILE] [-n NUMDAYS]
-                   [-o OUTPUTDIR]
+                   [-o OUTPUTDIR] [-p PASSWORD]
                    {build,generate-templates,list-distros,update-metadata}
 
 Packer builder.
@@ -48,6 +47,8 @@ optional arguments:
                         Define number of days since last build.
   -o OUTPUTDIR, --outputdir OUTPUTDIR
                         Define path to save builds.
+  -p PASSWORD, --password PASSWORD
+                        Define default password to override distros.yml
 ```
 
 ### Examples
@@ -84,6 +85,16 @@ builder (virtualbox-iso in this example).
 
 ```bash
 python -m packer_builder build -o ~/projects/packer/builds -d CentOS -b virtualbox-iso
+```
+
+#### Define Default Password At Runtime
+
+Because there might be a scenario in which you would want to override the password
+for all distros defined in `distros.yml`. You can pass this override password as
+part of the CLI arguments.
+
+```bash
+python -m packer_builder build -o ~/projects/packer/builds -p SuperSecretPass
 ```
 
 #### Generate Templates (ONLY)

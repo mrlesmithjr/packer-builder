@@ -30,6 +30,7 @@ class Build():
             self.builder = args.builder
         else:
             self.builder = 'all'
+        self.password_override = args.password
         self.load_build_manifest()
         self.iterate()
 
@@ -84,8 +85,8 @@ class Build():
                         build_image = True
                     self.logger.debug('Build image: %s', build_image)
                     if build_image:
-                        Template(self.build_dir, distro, distro_spec,
-                                 version, version_spec)
+                        Template(self.build_dir, self.password_override,
+                                 distro, distro_spec, version, version_spec)
                         self.validate()
                         self.build()
                         self.build_manifest[distro][version][

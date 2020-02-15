@@ -409,17 +409,20 @@ class Template():
         """Post processors for builds."""
         vmx_file = f'{self.build_dir}''/{{ user `vm_name` }}-{{ build_type }}-{{ timestamp }}/{{ user `vm_name` }}-{{ build_type }}-{{ timestamp }}.vmx'
         ovf_file = f'{self.build_dir}''/{{ user `vm_name` }}-{{ build_type }}-{{ timestamp }}/{{ user `vm_name` }}-{{ build_type }}-{{ timestamp }}.ovf'
-        self.template['post-processors'] = [
-            {
+
+        # Get list of builder types to properly add post processors
+        builder_types = list()
+        for build_type in self.template['builders']:
+            builder_types.append(build_type['type'])
+
+        # Build post processors based on builder_types
+        post_processors = list()
+        if 'vmware-iso' in builder_types:
+            post_processors.append({
                 'type': 'shell-local',
                 'inline': f'ovftool {vmx_file} {ovf_file}',
                 'only': ['vmware-iso']
-            },
-            {
-                'type': 'manifest',
-                'strip_path': True
-            }
-        ]
+            })
         if self.vagrant_box:
             vagrant_post_proc = {
                 'compression_level': '{{ user `compression_level` }}',
@@ -430,7 +433,13 @@ class Template():
             if self.distro == 'freenas':
                 vagrant_post_proc.update(
                     {'only': ['virtualbox-iso', 'vmware-iso']})
-            self.template['post-processors'].insert(1, vagrant_post_proc)
+            # self.template['post-processors'].insert(1, vagrant_post_proc)
+            post_processors.append(vagrant_post_proc)
+        post_processors.append({
+            'type': 'manifest',
+            'strip_path': True
+        })
+        self.template['post-processors'] = post_processors
 
     def save_template(self):
         """Save generated template for building."""

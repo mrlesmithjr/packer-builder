@@ -29,7 +29,7 @@ if [ -f /etc/vyos_build ]; then
   $WRAPPER end
 else
   sudo groupadd vagrant
-  if [[ $id == "Debian" ]]; then
+  if [[ $id == "debian" ]]; then
     sudo useradd vagrant -g vagrant -G sudo -s /bin/bash
   elif [[ $id == "centos" || $id == "fedora" ]]; then
     sudo useradd vagrant -g vagrant -G wheel -s /bin/bash

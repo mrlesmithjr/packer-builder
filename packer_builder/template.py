@@ -52,7 +52,6 @@ class Template():
             'iso_url': self.version_spec['iso_url'],
             'username': self.distro_spec['username'],
             'password': self.distro_spec['password'],
-            'vm_name': f'{self.distro}-{self.version}',
             'vcenter_server': self.distro_spec['vcenter_server'],
             'vcenter_user': self.distro_spec['vcenter_user'],
             'vcenter_pass': self.distro_spec['vcenter_pass'],
@@ -62,6 +61,7 @@ class Template():
             'vcenter_datastore': self.distro_spec['vcenter_datastore'],
             'vcenter_network': self.distro_spec['vcenter_network'],
             'vcenter_convert_to_template': self.distro_spec['vcenter_convert_to_template']
+            'vm_name': f'{self.distro}-{self.version}',  # noqa: E999
         }
         if self.password_override is not None:
             self.template['variables']['password'] = self.password_override
@@ -99,8 +99,8 @@ class Template():
         """Post processors for builds."""
 
 # pylint: disable=line-too-long
-        vmx_file = f'{self.build_dir}''/{{ user `vm_name` }}-{{ build_type }}-{{ timestamp }}/{{ user `vm_name` }}-{{ build_type }}-{{ timestamp }}.vmx'
-        ovf_file = f'{self.build_dir}''/{{ user `vm_name` }}-{{ build_type }}-{{ timestamp }}/{{ user `vm_name` }}-{{ build_type }}-{{ timestamp }}.ovf'
+        vmx_file = f'{self.build_dir}''/{{ user `vm_name` }}-{{ build_type }}-{{ timestamp }}/{{ user `vm_name` }}-{{ build_type }}-{{ timestamp }}.vmx'  # noqa: E501
+        ovf_file = f'{self.build_dir}''/{{ user `vm_name` }}-{{ build_type }}-{{ timestamp }}/{{ user `vm_name` }}-{{ build_type }}-{{ timestamp }}.ovf'  # noqa: E501
 
         # Get list of builder types to properly add post processors
         builder_types = list()
@@ -119,7 +119,7 @@ class Template():
             vagrant_post_proc = {
                 'compression_level': '{{ user `compression_level` }}',
                 'keep_input_artifact': True,
-                'output': '{{ user `vm_name` }}-{{ build_type }}-{{ timestamp }}.box',
+                'output': '{{ user `vm_name` }}-{{ build_type }}-{{ timestamp }}.box',  # noqa: E501
                 'type': 'vagrant'
             }
             if self.distro == 'freenas':

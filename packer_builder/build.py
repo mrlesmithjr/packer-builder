@@ -118,8 +118,9 @@ class Build():
     def build(self):
         """Build generated Packer template."""
         os.chdir(self.build_dir)
-        # Check which of the defined builders are available and only launch those.
-        # Values in the dict are: "builder-name" : ["executable", "names"]
+        # Check which of the defined builders are available and only launch
+        # those. Values in the dict are:
+        # "builder-name" : ["executable", "names"]
         builder_defs = {
             "vmware-iso": [
                 "vmware",

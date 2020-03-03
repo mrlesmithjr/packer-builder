@@ -51,7 +51,7 @@ class Template():
             'iso_url': self.version_spec['iso_url'],
             'username': self.distro_spec['username'],
             'password': self.distro_spec['password'],
-            'vm_name': f'{self.distro}-{self.version}',
+            'vm_name': f'{self.distro}-{self.version}',  # noqa: E999
         }
         if self.password_override is not None:
             self.template['variables']['password'] = self.password_override

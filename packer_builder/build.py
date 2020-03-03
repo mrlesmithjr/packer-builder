@@ -127,6 +127,9 @@ class Build():
                 "vmplayer",
                 "vmware-vmx"
             ],
+            "vsphere-iso": [
+                "curl"
+            ],
             "virtualbox-iso": [
                 "virtualbox",
             ],

@@ -2,6 +2,9 @@
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
 - [packer-builder](#packer-builder)
+  - [Build Status](#build-status)
+    - [GitHub Actions](#github-actions)
+    - [Travis CI](#travis-ci)
   - [Usage](#usage)
     - [Help](#help)
     - [Examples](#examples)
@@ -9,8 +12,11 @@
       - [Build All Distros For A Specific Builder](#build-all-distros-for-a-specific-builder)
       - [Build A Specific Distro For All Builders](#build-a-specific-distro-for-all-builders)
       - [Build A Specific Distro For A Specific Builder](#build-a-specific-distro-for-a-specific-builder)
+      - [Define Default Password At Runtime](#define-default-password-at-runtime)
       - [Generate Templates (ONLY)](#generate-templates-only)
   - [vagrant-libvirt plugin on macOS](#vagrant-libvirt-plugin-on-macos)
+  - [Requirements](#requirements)
+  - [Dependencies](#dependencies)
   - [License](#license)
   - [Author Information](#author-information)
 
@@ -19,6 +25,16 @@
 # packer-builder
 
 Using Packer **SHOULD** be straight forward and in most cases, it is. Packer builder abstracts many of the complexities of building images. With Packer builder, we wrap many of these complexities within code. By doing this, it provides us with a consistent model to build our images. We can inject logic which many times is not apparent. In addition to all of this, implement best practices into our builds. Is this builder for everyone? No. But for many, Packer can be a daunting process. So, we can minimize these processes, and make Packer builds more consumable.
+
+## Build Status
+
+### GitHub Actions
+
+![Molecule Test](https://github.com/mrlesmithjr/packer_builder/workflows/Molecule%20Test/badge.svg)
+
+### Travis CI
+
+[![Build Status](https://travis-ci.org/mrlesmithjr/packer_builder.svg?branch=master)](https://travis-ci.org/mrlesmithjr/packer_builder)
 
 ## Usage
 
@@ -118,6 +134,13 @@ PATH=/opt/vagrant/embedded/bin:$PATH \
 vagrant plugin install vagrant-libvirt
 ```
 
+## Requirements
+
+- [requirements.txt](requirements.txt)
+- [requirements-dev.txt](requirements-dev.txt)
+
+## Dependencies
+
 ## License
 
 MIT
@@ -126,6 +149,8 @@ MIT
 
 Larry Smith Jr.
 
-- [@mrlesmithjr](https://www.twitter.com/mrlesmithjr)
-- [EverythingShouldBeVirtual](http://everythingshouldbevirtual.com)
+- [@mrlesmithjr](https://twitter.com/mrlesmithjr)
 - [mrlesmithjr@gmail.com](mailto:mrlesmithjr@gmail.com)
+- [http://everythingshouldbevirtual.com](http://everythingshouldbevirtual.com)
+
+> NOTE: Repo has been created/updated using [https://github.com/mrlesmithjr/cookiecutter-python-project](https://github.com/mrlesmithjr/cookiecutter-python-project) as a template.

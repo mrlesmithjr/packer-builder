@@ -34,6 +34,6 @@ class GenerateTemplates():
                 generated_template = os.path.join(
                     self.build_dir, 'template.json')
                 renamed_template = os.path.join(
-                    self.build_dir, f'{distro}-{version}.json')
+                    self.build_dir, f'{distro}-{version}.json')  # noqa: E999
                 # Rename the generated template
                 shutil.move(generated_template, renamed_template)

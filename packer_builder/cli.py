@@ -1,4 +1,5 @@
-"""Parse command line arguments."""
+"""Console script for packer_builder."""
+
 import argparse
 
 

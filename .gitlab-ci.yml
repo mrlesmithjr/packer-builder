@@ -1,0 +1,39 @@
+---
+image: python:3.7
+
+variables:
+  PACKER_VERSION: "1.4.3"
+
+before_script:
+  - python --version
+  - pip3 install -r requirements.txt
+  - pip3 install pylint flake8
+
+stages:
+  - linting
+  - install_packer
+  - generate_packer_templates
+
+flake8:
+  stage: linting
+  script:
+    - flake8 packer_builder/*.py
+
+pylint:
+  stage: linting
+  script:
+    - pylint packer_builder/*.py
+
+install_packer:
+  stage: install_packer
+  script: |
+    sudo apt-get update
+    sudo apt-get install -y unzip wget
+    wget https://releases.hashicorp.com/packer/${PACKER_VERSION}/packer_${PACKER_VERSION}_linux_amd64.zip
+    unzip packer_${PACKER_VERSION}_linux_amd64.zip
+    sudo mv packer /usr/local/bin
+    echo "Packer Version: $(packer --version)"
+
+generate_packer_templates:
+  stage: generate_packer_templates
+  script: python -m packer_builder generate-templates --outputdir ~/projects/packer

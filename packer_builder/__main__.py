@@ -1,6 +1,6 @@
 """An easy way to define and build Packer images."""
 import os
-from packer_builder.args import get_args
+from packer_builder.cli import get_args
 from packer_builder.build import Build
 from packer_builder.distros import Distros
 from packer_builder.generate_templates import GenerateTemplates

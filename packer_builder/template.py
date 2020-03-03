@@ -60,7 +60,8 @@ class Template():
             'vcenter_host': self.distro_spec['vcenter_host'],
             'vcenter_datastore': self.distro_spec['vcenter_datastore'],
             'vcenter_network': self.distro_spec['vcenter_network'],
-            'vcenter_convert_to_template': self.distro_spec['vcenter_convert_to_template']
+            'vcenter_convert_to_template': self.distro_spec[
+                'vcenter_convert_to_template'],
             'vm_name': f'{self.distro}-{self.version}',  # noqa: E999
         }
         if self.password_override is not None:

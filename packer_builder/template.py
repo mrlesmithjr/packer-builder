@@ -6,6 +6,7 @@ from packer_builder.specs.builders.distro import distro_builder
 from packer_builder.specs.builders.qemu import qemu_builder
 from packer_builder.specs.builders.virtualbox import virtualbox_builder
 from packer_builder.specs.builders.vmware import vmware_builder
+from packer_builder.specs.builders.vsphere import vsphere_builder
 from packer_builder.specs.provisioners.freenas import freenas_provisioners
 from packer_builder.specs.provisioners.linux import linux_provisioners
 from packer_builder.specs.provisioners.windows import windows_provisioners
@@ -52,6 +53,15 @@ class Template():
             'username': self.distro_spec['username'],
             'password': self.distro_spec['password'],
             'vm_name': f'{self.distro}-{self.version}',
+            'vcenter_server': self.distro_spec['vcenter_server'],
+            'vcenter_user': self.distro_spec['vcenter_user'],
+            'vcenter_pass': self.distro_spec['vcenter_pass'],
+            'vcenter_resource_pool': self.distro_spec['vcenter_resource_pool'],
+            'vcenter_cluster': self.distro_spec['vcenter_cluster'],
+            'vcenter_host': self.distro_spec['vcenter_host'],
+            'vcenter_datastore': self.distro_spec['vcenter_datastore'],
+            'vcenter_network': self.distro_spec['vcenter_network'],
+            'vcenter_convert_to_template': self.distro_spec['vcenter_convert_to_template']
         }
         if self.password_override is not None:
             self.template['variables']['password'] = self.password_override
@@ -70,6 +80,8 @@ class Template():
                 virtualbox_builder(self)
             elif self.builder == 'vmware-iso':
                 vmware_builder(self)
+            elif self.builder == "vsphere-iso":
+                vsphere_builder(self)
 
             self.template['builders'].append(self.builder_spec)
 
@@ -113,6 +125,9 @@ class Template():
             if self.distro == 'freenas':
                 vagrant_post_proc.update(
                     {'only': ['virtualbox-iso', 'vmware-iso']})
+            else:
+                vagrant_post_proc.update(
+                    {'except': ['vsphere-iso']})
             # self.template['post-processors'].insert(1, vagrant_post_proc)
             post_processors.append(vagrant_post_proc)
         post_processors.append({

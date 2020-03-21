@@ -1,27 +1,3 @@
-<!-- START doctoc generated TOC please keep comment here to allow auto update -->
-<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-
-- [packer-builder](#packer-builder)
-  - [Build Status](#build-status)
-    - [GitHub Actions](#github-actions)
-    - [Travis CI](#travis-ci)
-  - [Usage](#usage)
-    - [Help](#help)
-    - [Examples](#examples)
-      - [Build All Distros For All Builders](#build-all-distros-for-all-builders)
-      - [Build All Distros For A Specific Builder](#build-all-distros-for-a-specific-builder)
-      - [Build A Specific Distro For All Builders](#build-a-specific-distro-for-all-builders)
-      - [Build A Specific Distro For A Specific Builder](#build-a-specific-distro-for-a-specific-builder)
-      - [Define Default Password At Runtime](#define-default-password-at-runtime)
-      - [Generate Templates (ONLY)](#generate-templates-only)
-  - [vagrant-libvirt plugin on macOS](#vagrant-libvirt-plugin-on-macos)
-  - [Requirements](#requirements)
-  - [Dependencies](#dependencies)
-  - [License](#license)
-  - [Author Information](#author-information)
-
-<!-- END doctoc generated TOC please keep comment here to allow auto update -->
-
 # packer-builder
 
 Using Packer **SHOULD** be straight forward and in most cases, it is. Packer builder abstracts many of the complexities of building images. With Packer builder, we wrap many of these complexities within code. By doing this, it provides us with a consistent model to build our images. We can inject logic which many times is not apparent. In addition to all of this, implement best practices into our builds. Is this builder for everyone? No. But for many, Packer can be a daunting process. So, we can minimize these processes, and make Packer builds more consumable.
@@ -30,11 +6,11 @@ Using Packer **SHOULD** be straight forward and in most cases, it is. Packer bui
 
 ### GitHub Actions
 
-![Molecule Test](https://github.com/mrlesmithjr/packer_builder/workflows/Molecule%20Test/badge.svg)
+![Python Test](https://github.com/mrlesmithjr/packer-builder/workflows/Python%20Test/badge.svg)
 
 ### Travis CI
 
-[![Build Status](https://travis-ci.org/mrlesmithjr/packer_builder.svg?branch=master)](https://travis-ci.org/mrlesmithjr/packer_builder)
+[![Build Status](https://travis-ci.org/mrlesmithjr/packer-builder.svg?branch=master)](https://travis-ci.org/mrlesmithjr/packer-builder)
 
 ## Usage
 
@@ -140,6 +116,10 @@ vagrant plugin install vagrant-libvirt
 - [requirements-dev.txt](requirements-dev.txt)
 
 ## Dependencies
+
+## Documentation
+
+Checkout [https://mrlesmithjr.github.io/packer-builder](https://mrlesmithjr.github.io/packer-builder) for project documentation.
 
 ## License
 

@@ -25,10 +25,10 @@ jobs:
           pip3 install flake8 pylint
       - name: flake8
         run: |
-          flake8 packer_builder/*.py
+          flake8 packer_builder/
       - name: pylint
         run: |
-          pylint packer_builder/*.py
+          pylint packer_builder/
       - name: Install Packer
         env:
           PACKER_VERSION: 1.4.3

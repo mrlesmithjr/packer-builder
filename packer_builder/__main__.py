@@ -1,6 +1,6 @@
 """An easy way to define and build Packer images."""
 import os
-from packer_builder.cli import get_args
+from packer_builder.cli import cli_args
 from packer_builder.build import Build
 from packer_builder.distros import Distros
 from packer_builder.generate_templates import GenerateTemplates
@@ -13,6 +13,9 @@ def main():
 
     # Setup root logger
     setup_logger()
+
+    # Capture CLI arguments
+    args = cli_args()
 
     # Ensure output dir exists if defined
     if args.outputdir is not None:

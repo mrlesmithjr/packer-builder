@@ -1,3 +1,6 @@
+"""packer_builder/specs/builders/virtualbox.py"""
+
+
 def virtualbox_builder(self):
     """Virtualbox specific builder specs."""
     self.builder_spec.update({

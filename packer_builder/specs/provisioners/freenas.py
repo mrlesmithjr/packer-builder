@@ -1,3 +1,8 @@
+"""packer_builder/specs/provisioners/freenas.py"""
+
+# pylint: disable=line-too-long
+
+
 def freenas_provisioners(self):
     """FreeNAS specific provisioners."""
     scripts = []

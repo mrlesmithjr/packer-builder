@@ -1,4 +1,9 @@
+"""packer_builder/specs/builder/distros/ubuntu.py"""
+
+
+# pylint: disable=line-too-long
 def ubuntu_spec(self):
+    """Ubuntu specs."""
     self.bootstrap_cfg = 'preseed.cfg'
     self.builder_spec.update(
         {
@@ -15,7 +20,7 @@ def ubuntu_spec(self):
                 ' initrd=/install/initrd.gz',
                 ' auto=true',
                 ' priority=critical',
-                ' url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/'f'{self.distro}-{self.version}-{self.bootstrap_cfg}',
+                ' url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/'f'{self.distro}-{self.version}-{self.bootstrap_cfg}',  # noqa: E501
                 ' <wait><enter>'
             ],
             'boot_wait': '30s',

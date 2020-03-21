@@ -1,3 +1,4 @@
+"""packer_builder/specs/builders/common.py"""
 
 # pylint: disable=line-too-long
 
@@ -13,7 +14,7 @@ def common_builder(self):
         'iso_checksum': '{{ user `iso_checksum` }}',
         'iso_url': '{{ user `iso_url` }}',
         'memory': '{{ user `memory` }}',
-        'output_directory': f'{self.build_dir}''/{{ user `vm_name` }}-{{ build_type }}-{{ timestamp }}',
+        'output_directory': f'{self.build_dir}''/{{ user `vm_name` }}-{{ build_type }}-{{ timestamp }}',  # noqa: E501
         'vm_name': '{{ user `vm_name` }}-{{ build_type }}-{{ timestamp }}'
     })
     if self.distro != 'windows':

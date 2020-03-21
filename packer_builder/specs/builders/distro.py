@@ -1,3 +1,5 @@
+"""packer_builder/specs/builders/distro.py"""
+
 import os
 import jinja2
 from packer_builder.specs.builders.distros.alpine import alpine_spec
@@ -27,7 +29,6 @@ def distro_builder(self):
     elif self.distro == 'ubuntu':
         ubuntu_spec(self)
 
-# pylint: enable=line-too-long
     if self.bootstrap_cfg is not None:
         j2_template_dir = os.path.join(
             self.script_dir, 'http', self.distro)
@@ -37,8 +38,9 @@ def distro_builder(self):
         bootstrap_template = j2_template.get_template(
             self.bootstrap_cfg + '.j2').render(username=username,
                                                password=password)
-        bootstrap_file = os.path.join(self.http_dir,
-                                      f'{self.distro}-{self.version}-{self.bootstrap_cfg}')
+        bootstrap_file = os.path.join(
+            self.http_dir,
+            f'{self.distro}-{self.version}-{self.bootstrap_cfg}')
         if os.path.isfile(bootstrap_file):
             os.remove(bootstrap_file)
         with open(bootstrap_file, 'w') as bootstrap_cfg:

@@ -1,3 +1,6 @@
+"""packer_builder/specs/builders/vmware.py"""
+
+
 def vmware_builder(self):
     """VMware specific builder specs."""
     self.builder_spec.update({

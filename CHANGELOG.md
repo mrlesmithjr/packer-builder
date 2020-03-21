@@ -1,3 +1,34 @@
+commit b28329826496a396a54d380707ab99032e8ea999
+Author: Larry Smith Jr <mrlesmithjr@gmail.com>
+Date:   Sat Mar 21 17:26:43 2020 -0400
+
+    Switch from if-then tree to action map
+    
+    This is a cleaner structure for going forward
+
+commit 1b7e7eb86967ccdc6422753dddd73f07fa30109b
+Author: Larry Smith Jr <mrlesmithjr@gmail.com>
+Date:   Sat Mar 21 17:25:46 2020 -0400
+
+    Standardized CLI args from Cookiecutter template
+
+commit 5569a65faa0c861130ed1df0b28b09dd66531656
+Author: Larry Smith Jr <mrlesmithjr@gmail.com>
+Date:   Sat Mar 21 17:24:46 2020 -0400
+
+    Random cleanup, etc.
+    
+    Cleaned up code structure a bit. Need to do more cleanup soon.
+
+commit 792ee42591eb4af609ab1bc4dc96cc90a874833e
+Author: Larry Smith Jr <mrlesmithjr@gmail.com>
+Date:   Sat Mar 21 17:21:58 2020 -0400
+
+    Added new logging functionality
+    
+    This new functionality comes from the Cookiecutter template
+    It replaces teh old logging
+
 commit 13d7b1c3a6f87505a532e55109355141fc2ec44f
 Author: Larry Smith Jr <mrlesmithjr@gmail.com>
 Date:   Sat Mar 21 17:18:05 2020 -0400

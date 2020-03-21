@@ -4,12 +4,15 @@ from packer_builder.cli import get_args
 from packer_builder.build import Build
 from packer_builder.distros import Distros
 from packer_builder.generate_templates import GenerateTemplates
+from packer_builder.logger import setup_logger
+
 
 
 def main():
     """Packer builder main execution."""
-    args = get_args()
-    distros = Distros(args).get_distros()
+
+    # Setup root logger
+    setup_logger()
 
     # Ensure output dir exists if defined
     if args.outputdir is not None:

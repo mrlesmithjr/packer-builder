@@ -1,3 +1,33 @@
+commit 13d7b1c3a6f87505a532e55109355141fc2ec44f
+Author: Larry Smith Jr <mrlesmithjr@gmail.com>
+Date:   Sat Mar 21 17:18:05 2020 -0400
+
+    New files, etc. from updated Cookiecutter template
+
+commit 3eb07dadb0e745e1ff13d93ac1ddcc9719b07b2c
+Author: Larry Smith Jr <mrlesmithjr@gmail.com>
+Date:   Tue Mar 3 01:38:11 2020 -0500
+
+    Fixing GitHub Actions and Travis CI tests
+
+commit aa1f12611881b1cf2343b469ca7b747ef8e11bd2
+Author: Larry Smith Jr <mrlesmithjr@gmail.com>
+Date:   Tue Mar 3 01:20:16 2020 -0500
+
+    Fixing additional Flake8 linting issues
+
+commit 68d4b03149c9daa906512a4932844cc55779ae6e
+Author: Larry Smith Jr <mrlesmithjr@gmail.com>
+Date:   Tue Mar 3 01:17:32 2020 -0500
+
+    Fixing Flake8 linting issues
+
+commit 58ddae01faa8e8dd14b8d03026149615880311e4
+Author: Larry Smith Jr <mrlesmithjr@gmail.com>
+Date:   Tue Mar 3 01:12:15 2020 -0500
+
+    Added changelog to track changes
+
 commit 0594c8c09ed934638a76edca561e96e34a42a511
 Author: Larry Smith Jr <mrlesmithjr@gmail.com>
 Date:   Tue Mar 3 01:11:02 2020 -0500

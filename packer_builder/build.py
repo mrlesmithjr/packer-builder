@@ -1,5 +1,6 @@
 """Build generated Packer template."""
 import os
+import logging
 from datetime import datetime
 import time
 import subprocess
@@ -15,7 +16,7 @@ class Build():
     """Main builder process."""
 
     def __init__(self, args, distros):
-        self.logger = get_logger(__name__)
+        self.logger = logging.getLogger(__name__)
         self.distros = distros
         self.build_dir = args.outputdir
         self.logger.debug('Build dir: %s', self.build_dir)

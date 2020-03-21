@@ -8,7 +8,6 @@ import sys
 import json
 from shutil import which
 from packer_builder.template import Template
-from packer_builder.logger import get_logger
 
 
 # pylint: disable=too-many-instance-attributes
@@ -23,14 +22,22 @@ class Build():
         self.build_manifest_file = os.path.join(
             self.build_dir, 'packer-builder.json')
         self.num_days = args.numdays
+
+        # Only build a single distro if passed
         if args.distro is not None:
             self.distro = args.distro
+        # Build all distros
         else:
             self.distro = 'all'
+
+        # Only build for a single builder
         if args.builder is not None:
             self.builder = args.builder
+        # Build all builders
         else:
             self.builder = 'all'
+
+        # Define password override if passed
         self.password_override = args.password
         self.load_build_manifest()
         self.iterate()

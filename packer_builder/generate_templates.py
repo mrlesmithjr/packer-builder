@@ -4,7 +4,6 @@ import logging
 import shutil
 from packer_builder.template import Template
 from packer_builder.build import Build
-from packer_builder.logger import get_logger
 
 
 # pylint: disable=too-few-public-methods
@@ -12,12 +11,13 @@ class GenerateTemplates():
     """Generate Packer templates without building."""
 
     def __init__(self, args, distros):
+        """Init a thing."""
+
         self.logger = logging.getLogger(__name__)
         self.distros = distros
         self.build_dir = args.outputdir
         self.password_override = args.password
         self.current_dir = os.getcwd()
-        self.generate()
 
     def generate(self):
         """Generate templates and rename them into the defined output dir."""

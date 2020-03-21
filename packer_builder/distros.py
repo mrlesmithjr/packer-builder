@@ -8,11 +8,16 @@ class Distros():
     """Main execution of loading and parsing distros YAML file."""
 
     def __init__(self, args):
+        """Init a thing."""
+
         self.file = args.file
         # Setup logging
         self.logger = logging.getLogger(__name__)
+        # Define distros dictionary
         self.distros = dict()
+        # Load YAML
         self.load_file()
+        # Parse YAML
         self.parse_file()
 
     def load_file(self):
@@ -33,5 +38,4 @@ class Distros():
 
     def list_distros(self):
         """Return list of distros available."""
-        for distro in self.distros:
-            print(distro)
+        print(json.dumps(self.distros))

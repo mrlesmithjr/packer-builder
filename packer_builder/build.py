@@ -6,8 +6,8 @@ import subprocess
 import sys
 import time
 from datetime import datetime
-from packer_builder.template import Template
 from shutil import which
+from packer_builder.template import Template
 
 
 # pylint: disable=too-many-instance-attributes

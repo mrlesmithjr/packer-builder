@@ -2,6 +2,8 @@
 import os
 import json
 import logging
+import subprocess
+import sys
 from packer_builder.specs.builders.common import common_builder
 from packer_builder.specs.builders.distro import distro_builder
 from packer_builder.specs.builders.qemu import qemu_builder
@@ -69,15 +71,16 @@ class Template():
             builder_spec = dict()
             # Get builder as lowercase
             builder = builder_.lower()
-            # Define common builder specs
-            builder_spec = common_builder(
-                builder_spec, self.distro, self.build_dir)
 
             # Define data to pass as kwargs
-            data = {'http_dir': self.http_dir, 'distro_spec': self.distro_spec,
-                    'distro': self.distro, 'script_dir': self.script_dir,
-                    'builder': builder, 'builder_spec': builder_spec,
-                    'version': self.version, 'vagrant_box': self.vagrant_box}
+            data = {'build_dir': self.build_dir, 'http_dir': self.http_dir,
+                    'distro_spec': self.distro_spec, 'distro': self.distro,
+                    'script_dir': self.script_dir, 'builder': builder,
+                    'builder_spec': builder_spec, 'version': self.version,
+                    'vagrant_box': self.vagrant_box}
+
+            # Define common builder specs
+            builder_spec = common_builder(data=data)
 
             # Define distro builder specs
             distro_builder(data=data)
@@ -147,7 +150,7 @@ class Template():
         })
         self.template['post-processors'] = post_processors
 
-    def save_template(self):
+    def save(self):
         """Save generated template for building."""
 
         self.get_vars()
@@ -166,3 +169,23 @@ class Template():
         with open(template_file, 'w') as packer_template:
             packer_template.write(template_json)
             packer_template.close()
+
+    def validate(self):
+        """Validate generated Packer template."""
+
+        current_dir = os.getcwd()
+        os.chdir(self.build_dir)
+
+        validate = subprocess.run(
+            ['packer', 'validate', 'template.json'], check=False,
+            capture_output=True)
+
+        # Display output back to stdout for visibility
+        print(validate.stdout.decode("utf-8"))
+
+        # Log and exit if failed
+        if validate.returncode != 0:
+            self.logger.error(validate)
+            sys.exit(1)
+
+        os.chdir(current_dir)

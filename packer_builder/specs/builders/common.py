@@ -3,8 +3,13 @@
 # pylint: disable=line-too-long
 
 
-def common_builder(builder_spec, distro, build_dir):
+def common_builder(**kwargs):
     """Common builder specs."""
+
+    # Setup vars from kwargs
+    build_dir = kwargs['data']['build_dir']
+    builder_spec = kwargs['data']['builder_spec']
+    distro = kwargs['data']['distro']
 
     builder_spec.update({
         'cpus': '{{ user `cpus` }}',

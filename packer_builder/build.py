@@ -1,13 +1,13 @@
 """Build generated Packer template."""
-import os
+import json
 import logging
-from datetime import datetime
-import time
+import os
 import subprocess
 import sys
-import json
-from shutil import which
+import time
+from datetime import datetime
 from packer_builder.template import Template
+from shutil import which
 
 
 # pylint: disable=too-many-instance-attributes
@@ -15,12 +15,18 @@ class Build():
     """Main builder process."""
 
     def __init__(self, args, distros):
+        # Setup logger
         self.logger = logging.getLogger(__name__)
+        # Define distros
         self.distros = distros
+        # Define build directory
         self.build_dir = args.outputdir
+        # Log build directory
         self.logger.info('Build dir: %s', self.build_dir)
+        # Define build manifest file
         self.build_manifest_file = os.path.join(
             self.build_dir, 'packer-builder.json')
+        # Define number of days since last build
         self.num_days = args.numdays
 
         # Only build a single distro if passed
@@ -55,26 +61,43 @@ class Build():
 # pylint: disable=too-many-locals
     def iterate(self):
         """Iterate through defined distros and build them."""
+
+        # Define current directory
         self.current_dir = os.getcwd()
+        # Log current directory
         self.logger.info('Current directory: %s', self.current_dir)
+
+        # Iterate through distros
         for distro, distro_spec in self.distros.items():
-            self.logger.info('Distro: %s', distro)
-            self.logger.info('Distro spec: %s', distro_spec)
+            # Log distro
+            self.logger.info('distro: %s', distro)
+            # Log distro spec
+            self.logger.info('distro_spec: %s', distro_spec)
+            # Get builders
             self.builders = distro_spec['builders']
+
+            # Check build manifest for distro
             distro_check = self.build_manifest.get(distro)
+            # Log distro check
             self.logger.info('Distro check: %s', distro_check)
+
             if distro_check is None:
                 self.build_manifest[distro] = dict()
+
             if self.distro == 'all' or (self.distro != 'all' and
                                         self.distro == distro):
                 for version, version_spec in distro_spec['versions'].items():
                     version = str(version)
                     version_check = self.build_manifest[distro].get(version)
-                    self.logger.info('Version %s check: %s',
-                                     version, version_check)
+                    # Log version
+                    self.logger.info('version: %s', version)
+                    # Log version_check
+                    self.logger.info('version_check: %s', version_check)
+
                     if version_check is None:
                         self.build_manifest[distro][version] = {
                             'builds': []}
+
                     build_image = False
                     current_time_epoch = time.mktime(
                         datetime.now().timetuple())
@@ -91,7 +114,9 @@ class Build():
                             build_image = True
                     else:
                         build_image = True
+
                     self.logger.info('Build image: %s', build_image)
+
                     if build_image:
                         # Define data to pass to class
                         data = {'output_dir': self.build_dir,
@@ -103,10 +128,11 @@ class Build():
                         # Generate the template
                         template = Template(data=data)
                         # Save template for processing
-                        template.save_template()
+                        template.save()
 
-                        # Validate template
-                        self.validate()
+                        # # Validate template
+                        # self.validate()
+                        template.validate()
 
                         # Build image from template
                         self.build()
@@ -128,23 +154,6 @@ class Build():
                                 self.build_manifest_file)
                             stream.write(json.dumps(
                                 self.build_manifest, indent=4))
-
-    def validate(self):
-        """Validate generated Packer template."""
-
-        os.chdir(self.build_dir)
-        validate = subprocess.Popen(['packer', 'validate', 'template.json'])
-        validate.wait()
-
-        self.logger.info(
-            'Template validation returncode: %s', validate.returncode)
-
-        # Log and exit if failed
-        if validate.returncode != 0:
-            self.logger.error(validate)
-            sys.exit(1)
-
-        os.chdir(self.current_dir)
 
     def build(self):
         """Build generated Packer template."""
@@ -194,7 +203,7 @@ class Build():
             build_commands = ['packer', 'build',
                               '-only=qemu', 'template.json']
             self.logger.info('Build commands: %s', build_commands)
-            self.process_build(build_commands)
+            self.process(build_commands)
             builders_avail.remove('qemu')
 
         # Now run everything else
@@ -203,17 +212,17 @@ class Build():
                           'template.json']
 
         self.logger.info('Build commands: %s', build_commands)
-        self.process_build(build_commands)
+        self.process(build_commands)
         os.chdir(self.current_dir)
 
-    def process_build(self, build_commands):
+    def process(self, build_commands):
         """Process build based on commands passed."""
 
-        build = subprocess.Popen(build_commands)
-        build.wait()
+        build = subprocess.run(build_commands, check=False)
 
-        self.logger.info('Build returncode: %s', build.returncode)
-
+        # Log and exit if failed
         if build.returncode != 0:
             self.logger.error(build)
             sys.exit(1)
+        else:
+            self.logger.info(build)

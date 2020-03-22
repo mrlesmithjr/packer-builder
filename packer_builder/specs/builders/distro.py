@@ -16,13 +16,15 @@ def distro_builder(**kwargs):
     """Distro specific builder specs."""
 
     # Setup vars from kwargs
-    http_dir = kwargs['data']['http_dir']
-    distro_spec = kwargs['data']['distro_spec']
-    distro = kwargs['data']['distro']
-    script_dir = kwargs['data']['script_dir']
     builder = kwargs['data']['builder']
     builder_spec = kwargs['data']['builder_spec']
+    distro = kwargs['data']['distro']
+    distro_spec = kwargs['data']['distro_spec']
+    http_dir = kwargs['data']['http_dir']
+    script_dir = kwargs['data']['script_dir']
     version = kwargs['data']['version']
+
+    # Define username, password from distro spec
     username = distro_spec['username']
     password = distro_spec['password']
 
@@ -47,21 +49,27 @@ def distro_builder(**kwargs):
 
     # If bootstrap config is not none generate config from Jinja2 template
     if bootstrap_cfg is not None:
+        # Define Jinja2 template directory
         j2_template_dir = os.path.join(
             script_dir, 'http', distro)
+        # Define Jinja2 template
         j2_template = jinja2.Environment(
             loader=jinja2.FileSystemLoader(j2_template_dir),
             trim_blocks=True)
+        # Render Jinja2 template
         bootstrap_template = j2_template.get_template(
             bootstrap_cfg + '.j2').render(username=username,
                                           password=password)
+        # Define bootstrap file
         bootstrap_file = os.path.join(
             http_dir,
             f'{distro}-{version}-{bootstrap_cfg}')
 
+        # Remove existing bootstrap file if it exists
         if os.path.isfile(bootstrap_file):
             os.remove(bootstrap_file)
 
+        # Write new bootstrap file
         with open(bootstrap_file, 'w') as bootstrap_cfg:
             bootstrap_cfg.write(bootstrap_template)
             bootstrap_cfg.close()

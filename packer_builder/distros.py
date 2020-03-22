@@ -1,6 +1,6 @@
 """Load distros YAML file for parsing."""
-import logging
 import json
+import logging
 import yaml
 
 
@@ -34,12 +34,12 @@ class Distros():
         for key, value in self.data.items():
             self.distros[key] = value
 
-    def get_distros(self):
+    def get(self):
         """Get distros found in YAML file."""
 
         return self.distros
 
-    def list_distros(self):
+    def list_(self):
         """Return list of distros available."""
 
         print(json.dumps(self.distros))

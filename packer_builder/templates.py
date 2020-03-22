@@ -3,7 +3,6 @@ import os
 import logging
 import shutil
 from packer_builder.template import Template
-from packer_builder.build import Build
 
 
 # pylint: disable=too-few-public-methods
@@ -13,11 +12,13 @@ class Templates():
     def __init__(self, args, distros):
         """Init a thing."""
 
+        # Setup logger
         self.logger = logging.getLogger(__name__)
+        # self.args = args
         self.distros = distros
         self.build_dir = args.outputdir
         self.password_override = args.password
-        self.current_dir = os.getcwd()
+        # self.current_dir = os.getcwd()
 
     def generate(self):
         """Generate templates and rename them into the defined output dir."""
@@ -37,14 +38,19 @@ class Templates():
                 # Generate the template
                 template = Template(data=data)
                 # Save template for processing
-                template.save_template()
+                template.save()
                 # Validate the generated template
-                Build.validate(self)
+                self.logger.info(
+                    'Validating distro: %s, distro_spec: %s', distro,
+                    distro_spec)
+                template.validate()
 
                 # Rename the generated template as distro and version
                 generated_template = os.path.join(
                     self.build_dir, 'template.json')
-                self.logger.info('Generated %s', generated_template)
+                self.logger.info('generated_template: %s', generated_template)
+
                 renamed_template = os.path.join(
                     self.build_dir, f'{distro}-{version}.json')  # noqa: E999
+                self.logger.info('renamed_template: %s', renamed_template)
                 shutil.move(generated_template, renamed_template)

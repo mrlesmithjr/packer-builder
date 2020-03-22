@@ -11,7 +11,7 @@ def build(args):
     """Build images."""
 
     # Get dictionary of distros
-    distros = Distros(args).get_distros()
+    distros = Distros(args).get()
     # Build all distros
     Build(args, distros)
 
@@ -22,14 +22,14 @@ def list_distros(args):
     # Get dictionary of distros
     distros = Distros(args)
     # List all distros as JSON output
-    distros.list_distros()
+    distros.list_()
 
 
 def generate_templates(args):
     """Generate templates without building."""
 
     # Get dictionary of distros
-    distros = Distros(args).get_distros()
+    distros = Distros(args).get()
     # Generate all templates without building
     templates = Templates(args, distros)
     templates.generate()

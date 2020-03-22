@@ -14,10 +14,12 @@ def virtualbox_builder(**kwargs):
         'hard_drive_interface': '{{ user `disk_adapter_type` }}',
     })
 
+    # Define OS type map for distro to guest OS type
     os_type_map = {'alpine': 'Linux26_64', 'centos': 'RedHat_64',
                    'debian': 'Debian_64', 'fedora': 'Fedora_64',
                    'freenas': 'FreeBSD_64', 'ubuntu': 'Ubuntu_64'}
 
+    # Lookup distro OS type
     guest_os_type = os_type_map[distro]
 
     # If FreeNAS, add storage devices if Vagrant to ensure we can provision

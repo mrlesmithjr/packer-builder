@@ -20,10 +20,12 @@ def vmware_builder(**kwargs):
         'vmx_remove_ethernet_interfaces': True
     })
 
+    # Define OS type map for distro to guest OS type
     os_type_map = {'alpine': 'other3xlinux-64', 'centos': 'centos-64',
                    'debian': 'debian8-64', 'fedora': 'fedora-64',
                    'freenas': 'FreeBSD-64', 'ubuntu': 'ubuntu-64'}
 
+    # Lookup distro OS type
     guest_os_type = os_type_map[distro]
 
     # If FreeNAS, add storage devices if Vagrant to ensure we can provision

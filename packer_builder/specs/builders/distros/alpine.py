@@ -2,21 +2,30 @@
 
 
 # pylint: disable=line-too-long
-def alpine_spec(self):
+def alpine_spec(**kwargs):
     """Alpine specs."""
-    if self.builder == 'qemu':
+
+    # Setup vars from kwargs
+    builder = kwargs['data']['builder']
+    builder_spec = kwargs['data']['builder_spec']
+    distro = kwargs['data']['distro']
+    version = kwargs['data']['version']
+
+    if builder == 'qemu':
         disk_dev = 'vda'
     else:
         disk_dev = 'sda'
-    self.bootstrap_cfg = 'answers'
-    self.builder_spec.update(
+
+    bootstrap_cfg = 'answers'
+
+    builder_spec.update(
         {
             'boot_command': [
                 'root<enter><wait><wait><wait>',
                 'ifconfig eth0 up && udhcpc -i eth0<enter><wait10>',
-                'wget http://{{ .HTTPIP }}:{{ .HTTPPort }}/'f'{self.distro}-{self.version}-answers<enter><wait>',  # noqa: E501
-                f'sed -i \'s/dev_replace/{disk_dev}/g\' 'f'$PWD/{self.distro}-{self.version}-answers<enter>',  # noqa: E501
-                f'setup-alpine -f $PWD/{self.distro}-{self.version}-answers<enter><wait5>',  # noqa: E501
+                'wget http://{{ .HTTPIP }}:{{ .HTTPPort }}/'f'{distro}-{version}-answers<enter><wait>',  # noqa: E501
+                f'sed -i \'s/dev_replace/{disk_dev}/g\' 'f'$PWD/{distro}-{version}-answers<enter>',  # noqa: E501
+                f'setup-alpine -f $PWD/{distro}-{version}-answers<enter><wait5>',  # noqa: E501
                 '{{ user `password` }}<enter><wait>',
                 '{{ user `password` }}<enter><wait>',
                 '<wait10><wait10><wait10>',
@@ -45,3 +54,5 @@ def alpine_spec(self):
             'shutdown_command': '/sbin/poweroff',
         }
     )
+
+    return bootstrap_cfg, builder_spec

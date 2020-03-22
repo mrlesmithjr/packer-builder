@@ -3,9 +3,10 @@
 # pylint: disable=line-too-long
 
 
-def common_builder(self):
+def common_builder(builder_spec, distro, build_dir):
     """Common builder specs."""
-    self.builder_spec.update({
+
+    builder_spec.update({
         'cpus': '{{ user `cpus` }}',
         'disk_size': '{{ user `disk_size` }}',
         'headless': True,
@@ -14,12 +15,15 @@ def common_builder(self):
         'iso_checksum': '{{ user `iso_checksum` }}',
         'iso_url': '{{ user `iso_url` }}',
         'memory': '{{ user `memory` }}',
-        'output_directory': f'{self.build_dir}''/{{ user `vm_name` }}-{{ build_type }}-{{ timestamp }}',  # noqa: E501
+        'output_directory': f'{build_dir}''/{{ user `vm_name` }}-{{ build_type }}-{{ timestamp }}',  # noqa: E501
         'vm_name': '{{ user `vm_name` }}-{{ build_type }}-{{ timestamp }}'
     })
-    if self.distro != 'windows':
-        self.builder_spec.update({
+
+    if distro != 'windows':
+        builder_spec.update({
             'ssh_password': '{{ user `password` }}',
             'ssh_username': '{{ user `username` }}',
             'ssh_timeout': '60m'
         })
+
+    return builder_spec

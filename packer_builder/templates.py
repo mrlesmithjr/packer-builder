@@ -7,7 +7,7 @@ from packer_builder.build import Build
 
 
 # pylint: disable=too-few-public-methods
-class GenerateTemplates():
+class Templates():
     """Generate Packer templates without building."""
 
     def __init__(self, args, distros):
@@ -27,15 +27,24 @@ class GenerateTemplates():
             # Iterate through versions defined in distros
             for version, version_spec in distro_spec['versions'].items():
                 version = str(version)
+
+                # Define data to pass to class
+                data = {'output_dir': self.build_dir,
+                        'password_override': self.password_override,
+                        'distro': distro, 'distro_spec': distro_spec,
+                        'version': version, 'version_spec': version_spec}
+
                 # Generate the template
-                Template(self.build_dir, self.password_override,
-                         distro, distro_spec, version, version_spec)
+                template = Template(data=data)
+                # Save template for processing
+                template.save_template()
                 # Validate the generated template
                 Build.validate(self)
+
+                # Rename the generated template as distro and version
                 generated_template = os.path.join(
                     self.build_dir, 'template.json')
                 self.logger.info('Generated %s', generated_template)
                 renamed_template = os.path.join(
                     self.build_dir, f'{distro}-{version}.json')  # noqa: E999
-                # Rename the generated template
                 shutil.move(generated_template, renamed_template)

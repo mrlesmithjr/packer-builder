@@ -3,10 +3,16 @@
 # pylint: disable=line-too-long
 
 
-def debian_spec(self):
+def debian_spec(**kwargs):
     "Debian specs."
-    self.bootstrap_cfg = 'preseed.cfg'
-    self.builder_spec.update(
+
+    # Setup vars from kwargs
+    builder_spec = kwargs['data']['builder_spec']
+    distro = kwargs['data']['distro']
+    version = kwargs['data']['version']
+
+    bootstrap_cfg = 'preseed.cfg'
+    builder_spec.update(
         {
             'boot_command': [
                 '<esc><wait>',
@@ -15,10 +21,12 @@ def debian_spec(self):
                 '<wait>',
                 ' priority=critical',
                 '<wait>',
-                ' url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/'f'{self.distro}-{self.version}-{self.bootstrap_cfg}',  # noqa: E501
+                ' url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/'f'{distro}-{version}-{bootstrap_cfg}',  # noqa: E501
                 ' <wait><enter>'
             ],
             'boot_wait': '30s',
             'shutdown_command': 'sudo /sbin/halt -h -p'
         }
     )
+
+    return bootstrap_cfg, builder_spec

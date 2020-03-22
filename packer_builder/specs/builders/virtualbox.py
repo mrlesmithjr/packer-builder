@@ -1,52 +1,56 @@
 """packer_builder/specs/builders/virtualbox.py"""
 
 
-def virtualbox_builder(self):
+def virtualbox_builder(**kwargs):
     """Virtualbox specific builder specs."""
-    self.builder_spec.update({
+
+    # Setup vars from kwargs
+    builder_spec = kwargs['data']['builder_spec']
+    distro = kwargs['data']['distro']
+    vagrant_box = kwargs['data']['vagrant_box']
+
+    builder_spec.update({
         'type': 'virtualbox-iso',
         'hard_drive_interface': '{{ user `disk_adapter_type` }}',
     })
-    if self.distro == 'alpine':
-        guest_os_type = 'Linux26_64'
-    elif self.distro == 'centos':
-        guest_os_type = 'RedHat_64'
-    elif self.distro == 'debian':
-        guest_os_type = 'Debian_64'
-    elif self.distro == 'fedora':
-        guest_os_type = 'Fedora_64'
-    elif self.distro == 'freenas':
-        guest_os_type = 'FreeBSD_64'
-        if self.vagrant_box:
-            self.builder_spec.update(
-                {
-                    'vboxmanage': [
-                        [
-                            'createhd',
-                            '--format',
-                            'VDI',
-                            '--filename',
-                            'disk2.vdi',
-                            '--size',
-                            '{{ user `disk_size` }}'
-                        ],
-                        [
-                            'storageattach',
-                            '{{ .Name }}',
-                            '--storagectl',
-                            'SCSI Controller',
-                            '--port',
-                            '1',
-                            '--device',
-                            '0',
-                            '--type',
-                            'hdd',
-                            '--medium',
-                            'disk2.vdi'
-                        ]
-                    ]
-                })
-    elif self.distro == 'ubuntu':
-        guest_os_type = 'Ubuntu_64'
 
-    self.builder_spec.update({'guest_os_type': guest_os_type})
+    os_type_map = {'alpine': 'Linux26_64', 'centos': 'RedHat_64',
+                   'debian': 'Debian_64', 'fedora': 'Fedora_64',
+                   'freenas': 'FreeBSD_64', 'ubuntu': 'Ubuntu_64'}
+
+    guest_os_type = os_type_map[distro]
+
+    # If FreeNAS, add storage devices if Vagrant to ensure we can provision
+    if distro == 'freenas' and vagrant_box:
+        builder_spec.update(
+            {
+                'vboxmanage': [
+                    [
+                        'createhd',
+                        '--format',
+                        'VDI',
+                        '--filename',
+                        'disk2.vdi',
+                        '--size',
+                        '{{ user `disk_size` }}'
+                    ],
+                    [
+                        'storageattach',
+                        '{{ .Name }}',
+                        '--storagectl',
+                        'SCSI Controller',
+                        '--port',
+                        '1',
+                        '--device',
+                        '0',
+                        '--type',
+                        'hdd',
+                        '--medium',
+                        'disk2.vdi'
+                    ]
+                ]
+            })
+
+    builder_spec.update({'guest_os_type': guest_os_type})
+
+    return builder_spec

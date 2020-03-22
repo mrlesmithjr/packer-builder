@@ -2,10 +2,14 @@
 
 
 # pylint: disable=line-too-long
-def freenas_spec(self):
+def freenas_spec(**kwargs):
     """FreeNAS specs."""
-    self.bootstrap_cfg = None
-    self.builder_spec.update(
+
+    # Setup vars from kwargs
+    builder_spec = kwargs['data']['builder_spec']
+
+    bootstrap_cfg = None
+    builder_spec.update(
         {
             'boot_command': [
                 '<enter>',
@@ -27,3 +31,5 @@ def freenas_spec(self):
             'shutdown_command': 'shutdown -p now',
         }
     )
+
+    return bootstrap_cfg, builder_spec

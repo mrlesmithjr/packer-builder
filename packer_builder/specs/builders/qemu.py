@@ -5,8 +5,11 @@ from shutil import which
 from sys import platform
 
 
-def qemu_builder(self):
+def qemu_builder(**kwargs):
     """Qemu specific builder specs."""
+
+    # Setup vars from kwargs
+    builder_spec = kwargs['data']['builder_spec']
 
     # Check which platform QEMU is running on to set accelerator correctly
     # https://www.packer.io/docs/builders/qemu.html#accelerator
@@ -31,9 +34,11 @@ def qemu_builder(self):
     else:
         accelerator = 'none'
 
-    self.builder_spec.update({
+    builder_spec.update({
         'accelerator': accelerator,
         'type': 'qemu',
         'disk_interface': 'virtio',
         'format': 'qcow2',
     })
+
+    return builder_spec

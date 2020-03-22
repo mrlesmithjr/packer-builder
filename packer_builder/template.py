@@ -12,6 +12,7 @@ from packer_builder.specs.provisioners.linux import linux_provisioners
 from packer_builder.specs.provisioners.windows import windows_provisioners
 
 # pylint: disable=too-many-arguments
+# pylint: disable=too-many-instance-attributes
 
 
 class Template():

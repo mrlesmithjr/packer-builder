@@ -10,6 +10,7 @@ from shutil import which
 from packer_builder.template import Template
 
 
+# pylint: disable=too-many-instance-attributes
 class Build():
     """Main builder process."""
 

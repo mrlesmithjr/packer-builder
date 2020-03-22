@@ -9,6 +9,8 @@ from packer_builder.specs.builders.distros.fedora import fedora_spec
 from packer_builder.specs.builders.distros.freenas import freenas_spec
 from packer_builder.specs.builders.distros.ubuntu import ubuntu_spec
 
+# pylint: disable=too-many-locals
+
 
 def distro_builder(**kwargs):
     """Distro specific builder specs."""

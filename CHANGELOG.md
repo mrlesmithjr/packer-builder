@@ -1,3 +1,56 @@
+commit 02ddbf898b604ef49d0cebcffdfb18b69b696ff2
+Author: Larry Smith Jr <mrlesmithjr@gmail.com>
+Date:   Sun Mar 22 11:14:21 2020 -0400
+
+    Fixed linting issues
+
+commit cd476f2a2c2dce2de5649992ec6e33d0190e5e4d
+Author: Larry Smith Jr <mrlesmithjr@gmail.com>
+Date:   Sun Mar 22 11:08:30 2020 -0400
+
+    More cleanup and optimizations
+    
+    - Template validations have been moved out of build module and into
+      template as it should be.
+    - Changed from subprocess Popen to subprocess run
+    - Cleaned up a bit more formatting, etc.
+
+commit 5cbc9a6213b70146fb67129bcbc0ec747447e1e2
+Author: Larry Smith Jr <mrlesmithjr@gmail.com>
+Date:   Sun Mar 22 02:32:39 2020 -0400
+
+    Fixed linting issues
+
+commit fdd970d12d5ce6412cf4bb835b3d1eecd9a202a1
+Author: Larry Smith Jr <mrlesmithjr@gmail.com>
+Date:   Sun Mar 22 02:24:25 2020 -0400
+
+    Oh my! So, so many changes.
+    
+    - Cleaned up many if-then trees to use decision maps instead
+    - Cleaned up functions using self in favor of kwargs
+    - Added a bit more logging
+    - Added more comments to clarify things
+    - Probably more that I have forgotten
+    - This will be a huge refactoring to clean up code and add more
+      efficient logic, etc.
+
+commit f998d27b23d280cd7792967c45b10ed8cfffe671
+Author: Larry Smith Jr <mrlesmithjr@gmail.com>
+Date:   Sun Mar 22 02:23:51 2020 -0400
+
+    Renamed generate_templates module to templates
+    
+    Now has generate as function
+
+commit 4b2306af479229a90c7b531065a412098a96d070
+Author: Larry Smith Jr <mrlesmithjr@gmail.com>
+Date:   Sat Mar 21 17:52:00 2020 -0400
+
+    Fixing linting issues.
+    
+    After updating linting checks from template, the flood gates opened.
+
 commit b28329826496a396a54d380707ab99032e8ea999
 Author: Larry Smith Jr <mrlesmithjr@gmail.com>
 Date:   Sat Mar 21 17:26:43 2020 -0400

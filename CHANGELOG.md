@@ -1,3 +1,9 @@
+commit 598b7124d462d564ae9c5b24e785d71d91614971
+Author: Larry Smith Jr <mrlesmithjr@gmail.com>
+Date:   Sun Mar 22 11:21:00 2020 -0400
+
+    Python 3.6 removed from testing - Not supported
+
 commit 02ddbf898b604ef49d0cebcffdfb18b69b696ff2
 Author: Larry Smith Jr <mrlesmithjr@gmail.com>
 Date:   Sun Mar 22 11:14:21 2020 -0400

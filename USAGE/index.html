@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  
+  <link rel="shortcut icon" href="../img/favicon.ico">
+  <title>Packer Builder Usage - packer-builder</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
+
+  <link rel="stylesheet" href="../css/theme.css" />
+  <link rel="stylesheet" href="../css/theme_extra.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" />
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Packer Builder Usage";
+    var mkdocs_page_input_path = "USAGE.md";
+    var mkdocs_page_url = null;
+  </script>
+  
+  <script src="../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+        <a href=".." class="icon icon-home"> packer-builder</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="..">Packer Builder</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../ABOUT/">About Packer Builder</a>
+                    </li>
+                </ul>
+                <ul class="current">
+                    <li class="toctree-l1 current"><a class="reference internal current" href="./">Packer Builder Usage</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#help">Help</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#examples">Examples</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#build-all-distros-for-all-builders">Build All Distros For All Builders</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#build-all-distros-for-a-specific-builder">Build All Distros For A Specific Builder</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#build-a-specific-distro-for-all-builders">Build A Specific Distro For All Builders</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#build-a-specific-distro-for-a-specific-builder">Build A Specific Distro For A Specific Builder</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#define-default-password-at-runtime">Define Default Password At Runtime</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#generate-templates-only">Generate Templates (ONLY)</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#vagrant-libvirt-plugin-on-macos">vagrant-libvirt plugin on macOS</a>
+    </li>
+    </ul>
+                    </li>
+                </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="..">packer-builder</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="..">Docs</a> &raquo;</li>
+    
+      
+    
+    <li>Packer Builder Usage</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="packer-builder-usage">Packer Builder Usage</h1>
+<h2 id="help">Help</h2>
+<pre><code class="bash">python -m packer_builder --help
+...
+usage: __main__.py [-h] [-d DISTRO] [-b BUILDER] [-f FILE] [-n NUMDAYS]
+                   [-o OUTPUTDIR] [-p PASSWORD]
+                   {build,generate-templates,list-distros,update-metadata}
+
+Packer builder.
+
+positional arguments:
+  {build,generate-templates,list-distros,update-metadata}
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -d DISTRO, --distro DISTRO
+                        Only build specific distro.
+  -b BUILDER, --builder BUILDER
+                        Only use specific builder.
+  -f FILE, --file FILE  Path to distro.
+  -n NUMDAYS, --numdays NUMDAYS
+                        Define number of days since last build.
+  -o OUTPUTDIR, --outputdir OUTPUTDIR
+                        Define path to save builds.
+  -p PASSWORD, --password PASSWORD
+                        Define default password to override distros.yml
+</code></pre>
+
+<h2 id="examples">Examples</h2>
+<h3 id="build-all-distros-for-all-builders">Build All Distros For All Builders</h3>
+<p>This will build all distros for all builders.</p>
+<pre><code class="bash">python -m packer_builder build -o ~/projects/packer/builds
+</code></pre>
+
+<h3 id="build-all-distros-for-a-specific-builder">Build All Distros For A Specific Builder</h3>
+<p>This will build all distros for a specific builder (virtualbox-iso in this
+example).</p>
+<pre><code class="bash">python -m packer_builder build -o ~/projects/packer/builds -b virtualbox-iso
+</code></pre>
+
+<h3 id="build-a-specific-distro-for-all-builders">Build A Specific Distro For All Builders</h3>
+<p>This will build a specific distro (CentOS in this example) for all builders.</p>
+<pre><code class="bash">python -m packer_builder build -o ~/projects/packer/builds -d CentOS
+</code></pre>
+
+<h3 id="build-a-specific-distro-for-a-specific-builder">Build A Specific Distro For A Specific Builder</h3>
+<p>This will build a specific distro (CentOS in this example) for a specific
+builder (virtualbox-iso in this example).</p>
+<pre><code class="bash">python -m packer_builder build -o ~/projects/packer/builds -d CentOS -b virtualbox-iso
+</code></pre>
+
+<h3 id="define-default-password-at-runtime">Define Default Password At Runtime</h3>
+<p>Because there might be a scenario in which you would want to override the password
+for all distros defined in <code>distros.yml</code>. You can pass this override password as
+part of the CLI arguments.</p>
+<pre><code class="bash">python -m packer_builder build -o ~/projects/packer/builds -p SuperSecretPass
+</code></pre>
+
+<h3 id="generate-templates-only">Generate Templates (ONLY)</h3>
+<pre><code class="bash">python -m packer_builder generate-templates --outputdir ~/projects/packer
+</code></pre>
+
+<h2 id="vagrant-libvirt-plugin-on-macos">vagrant-libvirt plugin on macOS</h2>
+<pre><code class="bash">brew install libiconv gcc libvirt
+</code></pre>
+
+<pre><code class="bash">RV=$(/opt/vagrant/embedded/bin/ruby --version | awk '{ print $2 }'| awk '{ split($0, a, &quot;p&quot;); print a[1] }')
+CONFIGURE_ARGS='with-ldflags=-L/opt/vagrant/embedded/lib with-libvirt-include=/usr/local/include/libvirt with-libvirt-lib=/usr/local/lib' \
+GEM_HOME=~/.vagrant.d/gems/$RV \
+GEM_PATH=$GEM_HOME:/opt/vagrant/embedded/gems \
+PATH=/opt/vagrant/embedded/bin:$PATH \
+vagrant plugin install vagrant-libvirt
+</code></pre>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="../ABOUT/" class="btn btn-neutral" title="About Packer Builder"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+        <span><a href="../ABOUT/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+    </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme.js" defer></script>
+      <script src="../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>

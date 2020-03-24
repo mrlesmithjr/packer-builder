@@ -1,6 +1,9 @@
 """Generates the Packer build template."""
 import os
 import json
+import logging
+import subprocess
+import sys
 from packer_builder.specs.builders.common import common_builder
 from packer_builder.specs.builders.distro import distro_builder
 from packer_builder.specs.builders.qemu import qemu_builder
@@ -17,26 +20,30 @@ from packer_builder.specs.provisioners.windows import windows_provisioners
 class Template():
     """Main Packer template execution."""
 
-    def __init__(self, output_dir, password_override,
-                 distro, distro_spec, version, version_spec):
+    def __init__(self, **kwargs):
+
+        # Setup logger
+        self.logger = logging.getLogger(__name__)
+        # Obtain script dir from absolute path of this module
         self.script_dir = os.path.dirname(os.path.abspath(__file__))
-        self.build_dir = output_dir
+
+        # Setup vars for class usage
+        self.build_dir = kwargs['data']['output_dir']
         self.build_scripts_dir = os.path.join(self.script_dir, 'scripts')
-        self.distro = distro.lower()
-        self.distro_spec = distro_spec
+        self.distro = kwargs['data']['distro'].lower()
+        self.distro_spec = kwargs['data']['distro_spec']
         self.http_dir = os.path.join(self.build_dir, 'http')
-        self.password_override = password_override
+        self.password_override = kwargs['data']['password_override']
+        self.version = kwargs['data']['version']
+        self.version_spec = kwargs['data']['version_spec']
+
+        # Define template dictionary
         self.template = dict()
-        self.vagrant_box = distro_spec.get('vagrant_box')
+
+        # Check if Vagrant box is to be built or not
+        self.vagrant_box = self.distro_spec.get('vagrant_box')
         if self.vagrant_box is None:
             self.vagrant_box = False
-        self.version = version
-        self.version_spec = version_spec
-        self.get_vars()
-        self.get_builders()
-        self.get_provisioners()
-        self.get_post_processors()
-        self.save_template()
 
     def get_vars(self):
         """Define user specific variables."""
@@ -59,29 +66,51 @@ class Template():
     def get_builders(self):
         """Direct builder configurations based on builder type."""
         self.template['builders'] = []
-        for builder in self.distro_spec['builders']:
-            self.builder = builder.lower()
-            self.builder_spec = dict()
-            common_builder(self)
-            distro_builder(self)
-            if self.builder == 'qemu':
-                qemu_builder(self)
-            elif self.builder == 'virtualbox-iso':
-                virtualbox_builder(self)
-            elif self.builder == 'vmware-iso':
-                vmware_builder(self)
+        for builder_ in self.distro_spec['builders']:
+            # Define build spec dictionary
+            builder_spec = dict()
+            # Get builder as lowercase
+            builder = builder_.lower()
 
-            self.template['builders'].append(self.builder_spec)
+            # Define data to pass as kwargs
+            data = {'build_dir': self.build_dir, 'http_dir': self.http_dir,
+                    'distro_spec': self.distro_spec, 'distro': self.distro,
+                    'script_dir': self.script_dir, 'builder': builder,
+                    'builder_spec': builder_spec, 'version': self.version,
+                    'vagrant_box': self.vagrant_box}
+
+            # Define common builder specs
+            builder_spec = common_builder(data=data)
+
+            # Define distro builder specs
+            distro_builder(data=data)
+
+            # Define builder map to define function
+            builder_map = {'qemu': qemu_builder,
+                           'virtualbox-iso': virtualbox_builder,
+                           'vmware-iso': vmware_builder}
+
+            builder_mapping = builder_map[builder]
+            builder_spec = builder_mapping(data=data)
+
+            self.template['builders'].append(builder_spec)
 
     def get_provisioners(self):
         """Direct provisioners based on distro type."""
+
         self.template['provisioners'] = []
+
+        # Define data to pass as kwargs
+        data = {'build_scripts_dir': self.build_scripts_dir,
+                'template': self.template,
+                'vagrant_box': self.vagrant_box}
+
         if self.distro == 'freenas':
-            freenas_provisioners(self)
+            self.template = freenas_provisioners(data=data)
         elif self.distro == 'windows':
-            windows_provisioners(self)
+            self.template = windows_provisioners(data=data)
         else:
-            linux_provisioners(self)
+            self.template = linux_provisioners(data=data)
 
     def get_post_processors(self):
         """Post processors for builds."""
@@ -121,12 +150,42 @@ class Template():
         })
         self.template['post-processors'] = post_processors
 
-    def save_template(self):
+    def save(self):
         """Save generated template for building."""
+
+        self.get_vars()
+        self.get_builders()
+        self.get_provisioners()
+        self.get_post_processors()
+
         template_json = json.dumps(self.template, indent=4)
         template_file = os.path.join(self.build_dir, 'template.json')
+
+        # If template file exists, remove it
         if os.path.isfile(template_file):
             os.remove(template_file)
+
+        # Write new template file
         with open(template_file, 'w') as packer_template:
             packer_template.write(template_json)
             packer_template.close()
+
+    def validate(self):
+        """Validate generated Packer template."""
+
+        current_dir = os.getcwd()
+        os.chdir(self.build_dir)
+
+        validate = subprocess.run(
+            ['packer', 'validate', 'template.json'], check=False,
+            capture_output=True)
+
+        # Display output back to stdout for visibility
+        print(validate.stdout.decode("utf-8"))
+
+        # Log and exit if failed
+        if validate.returncode != 0:
+            self.logger.error(validate)
+            sys.exit(1)
+
+        os.chdir(current_dir)

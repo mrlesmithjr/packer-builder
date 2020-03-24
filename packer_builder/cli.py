@@ -1,10 +1,11 @@
-"""Console script for packer_builder."""
+"""packer_builder/cli.py"""
 
 import argparse
+from packer_builder.release import __package_name__, __version__
 
 
-def get_args():
-    """Available command line arguments to pass."""
+def cli_args():
+    """Console script for packer_builder."""
     parser = argparse.ArgumentParser(description="Packer builder.")
     parser.add_argument('action', choices=[
         'build', 'generate-templates', 'list-distros',
@@ -20,8 +21,12 @@ def get_args():
                         help='Define path to save builds.')
     parser.add_argument('-p', '--password',
                         help='Define default password to override distros.yml')
+
+    parser.add_argument('--version', action='version',
+                        version=f'{__package_name__} {__version__}')
     args = parser.parse_args()
     if (args.action in ['build', 'generate-templates'] and
             args.outputdir is None):
         parser.error('--outputdir is REQUIRED!')
+
     return args

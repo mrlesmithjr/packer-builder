@@ -1,6 +1,15 @@
-def freenas_spec(self):
-    self.bootstrap_cfg = None
-    self.builder_spec.update(
+"""packer_builder/specs/builder/distros/freenas.py"""
+
+
+# pylint: disable=line-too-long
+def freenas_spec(**kwargs):
+    """FreeNAS specs."""
+
+    # Setup vars from kwargs
+    builder_spec = kwargs['data']['builder_spec']
+
+    bootstrap_cfg = None
+    builder_spec.update(
         {
             'boot_command': [
                 '<enter>',
@@ -15,10 +24,12 @@ def freenas_spec(self):
                 '3<enter>',
                 '<wait60><wait60><wait60><wait60><wait60>',
                 '9<enter>',
-                'curl -X PUT -u {{ user `username` }}:{{ user `password` }} -H \'Content-Type: application/json\' -d \'{\"ssh_rootlogin\": true}\' http://localhost/api/v1.0/services/ssh/<enter>',
-                'curl -X PUT -u {{ user `username` }}:{{ user `password` }} -H \'Content-Type: application/json\' -d \'{\"srv_enable\": true}\' http://localhost/api/v1.0/services/services/ssh/<enter>'
+                'curl -X PUT -u {{ user `username` }}:{{ user `password` }} -H \'Content-Type: application/json\' -d \'{\"ssh_rootlogin\": true}\' http://localhost/api/v1.0/services/ssh/<enter>',  # noqa: E501
+                'curl -X PUT -u {{ user `username` }}:{{ user `password` }} -H \'Content-Type: application/json\' -d \'{\"srv_enable\": true}\' http://localhost/api/v1.0/services/services/ssh/<enter>'  # noqa: E501
             ],
             'boot_wait': '30s',
             'shutdown_command': 'shutdown -p now',
         }
     )
+
+    return bootstrap_cfg, builder_spec

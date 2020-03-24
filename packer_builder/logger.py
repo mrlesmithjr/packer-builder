@@ -1,37 +1,48 @@
-"""Set's up logging facility."""
+"""packer_builder/logger.py"""
 
 import logging
-from logging.handlers import TimedRotatingFileHandler
 import os
-import sys
-
-FORMATTER = logging.Formatter(
-    "%(asctime)s — %(name)s — %(levelname)s — %(message)s")
-LOG_FILE = os.path.join('logs', 'builder.log')
-if not os.path.isdir('logs'):
-    os.makedirs('logs')
 
 
-# Currently not implemented
-def get_console_handler():
-    """Sets up console logging handler."""
-    console_handler = logging.StreamHandler(sys.stdout)
-    console_handler.setFormatter(FORMATTER)
-    return console_handler
+def setup_logger():
+    """Setup main logger."""
 
+    # Define parent directory to determine root log directory
+    # Excluded in .gitignore
+    parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    # Define logs directory
+    log_dir = os.path.join(parent_dir, 'logs')
+    # Define log file
+    log_file = os.path.join(log_dir, 'packer_builder.log')
 
-def get_file_handler():
-    """Sets up file logging handler."""
-    file_handler = TimedRotatingFileHandler(LOG_FILE, when='midnight')
-    file_handler.setFormatter(FORMATTER)
-    return file_handler
+    # Create logs directory if it does not exist
+    if not os.path.isdir(log_dir):
+        os.makedirs(log_dir)
 
-
-def get_logger(logger_name):
-    """Returns logger facility to module(s)."""
-    logger = logging.getLogger(logger_name)
+    # Setup formatting
+    formatter = logging.Formatter(
+        '%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    # Setup log
+    logger = logging.getLogger()
+    # Setup log level
     logger.setLevel(logging.DEBUG)
-    # logger.addHandler(get_console_handler())
-    logger.addHandler(get_file_handler())
-    logger.propagate = False
+
+    # Setup console handler
+    console_handler = logging.StreamHandler()
+    # Setup console handler level
+    console_handler.setLevel(logging.WARNING)
+    # Add formatting to console handler
+    console_handler.setFormatter(formatter)
+    # Add console handler to log
+    logger.addHandler(console_handler)
+
+    # Setup file handler
+    file_handler = logging.FileHandler(log_file)
+    # Setup file handler level
+    file_handler.setLevel(logging.DEBUG)
+    # Add formatting to file handler
+    file_handler.setFormatter(formatter)
+    # Add file handler to log
+    logger.addHandler(file_handler)
+
     return logger

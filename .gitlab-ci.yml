@@ -17,13 +17,12 @@ stages:
 flake8:
   stage: linting
   script:
-    - flake8 packer_builder/*.py
+    - flake8 packer_builder/
 
 pylint:
   stage: linting
   script:
-    - pylint packer_builder/*.py
-
+    - pylint packer_builder/
 install_packer:
   stage: install_packer
   script: |

@@ -1,6 +1,15 @@
-def vmware_builder(self):
+"""packer_builder/specs/builders/vmware.py"""
+
+
+def vmware_builder(**kwargs):
     """VMware specific builder specs."""
-    self.builder_spec.update({
+
+    # Setup vars from kwargs
+    builder_spec = kwargs['data']['builder_spec']
+    distro = kwargs['data']['distro']
+    vagrant_box = kwargs['data']['vagrant_box']
+
+    builder_spec.update({
         'type': 'vmware-iso',
         'disk_adapter_type': '{{ user `disk_adapter_type` }}',
         'disk_type_id': 0,
@@ -10,20 +19,20 @@ def vmware_builder(self):
         },
         'vmx_remove_ethernet_interfaces': True
     })
-    if self.distro == 'alpine':
-        guest_os_type = 'other3xlinux-64'
-    elif self.distro == 'centos':
-        guest_os_type = 'centos-64'
-    elif self.distro == 'debian':
-        guest_os_type = 'debian8-64'
-    elif self.distro == 'fedora':
-        guest_os_type = 'fedora-64'
-    elif self.distro == 'freenas':
-        guest_os_type = 'FreeBSD-64'
-        if self.vagrant_box:
-            self.builder_spec.update(
-                {'disk_additional_size': ['{{ user `disk_size` }}']})
-    elif self.distro == 'ubuntu':
-        guest_os_type = 'ubuntu-64'
 
-    self.builder_spec.update({'guest_os_type': guest_os_type})
+    # Define OS type map for distro to guest OS type
+    os_type_map = {'alpine': 'other3xlinux-64', 'centos': 'centos-64',
+                   'debian': 'debian8-64', 'fedora': 'fedora-64',
+                   'freenas': 'FreeBSD-64', 'ubuntu': 'ubuntu-64'}
+
+    # Lookup distro OS type
+    guest_os_type = os_type_map[distro]
+
+    # If FreeNAS, add storage devices if Vagrant to ensure we can provision
+    if distro == 'freenas' and vagrant_box:
+        builder_spec.update(
+            {'disk_additional_size': ['{{ user `disk_size` }}']})
+
+    builder_spec.update({'guest_os_type': guest_os_type})
+
+    return builder_spec

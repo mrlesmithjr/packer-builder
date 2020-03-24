@@ -1,3 +1,123 @@
+commit 598b7124d462d564ae9c5b24e785d71d91614971
+Author: Larry Smith Jr <mrlesmithjr@gmail.com>
+Date:   Sun Mar 22 11:21:00 2020 -0400
+
+    Python 3.6 removed from testing - Not supported
+
+commit 02ddbf898b604ef49d0cebcffdfb18b69b696ff2
+Author: Larry Smith Jr <mrlesmithjr@gmail.com>
+Date:   Sun Mar 22 11:14:21 2020 -0400
+
+    Fixed linting issues
+
+commit cd476f2a2c2dce2de5649992ec6e33d0190e5e4d
+Author: Larry Smith Jr <mrlesmithjr@gmail.com>
+Date:   Sun Mar 22 11:08:30 2020 -0400
+
+    More cleanup and optimizations
+    
+    - Template validations have been moved out of build module and into
+      template as it should be.
+    - Changed from subprocess Popen to subprocess run
+    - Cleaned up a bit more formatting, etc.
+
+commit 5cbc9a6213b70146fb67129bcbc0ec747447e1e2
+Author: Larry Smith Jr <mrlesmithjr@gmail.com>
+Date:   Sun Mar 22 02:32:39 2020 -0400
+
+    Fixed linting issues
+
+commit fdd970d12d5ce6412cf4bb835b3d1eecd9a202a1
+Author: Larry Smith Jr <mrlesmithjr@gmail.com>
+Date:   Sun Mar 22 02:24:25 2020 -0400
+
+    Oh my! So, so many changes.
+    
+    - Cleaned up many if-then trees to use decision maps instead
+    - Cleaned up functions using self in favor of kwargs
+    - Added a bit more logging
+    - Added more comments to clarify things
+    - Probably more that I have forgotten
+    - This will be a huge refactoring to clean up code and add more
+      efficient logic, etc.
+
+commit f998d27b23d280cd7792967c45b10ed8cfffe671
+Author: Larry Smith Jr <mrlesmithjr@gmail.com>
+Date:   Sun Mar 22 02:23:51 2020 -0400
+
+    Renamed generate_templates module to templates
+    
+    Now has generate as function
+
+commit 4b2306af479229a90c7b531065a412098a96d070
+Author: Larry Smith Jr <mrlesmithjr@gmail.com>
+Date:   Sat Mar 21 17:52:00 2020 -0400
+
+    Fixing linting issues.
+    
+    After updating linting checks from template, the flood gates opened.
+
+commit b28329826496a396a54d380707ab99032e8ea999
+Author: Larry Smith Jr <mrlesmithjr@gmail.com>
+Date:   Sat Mar 21 17:26:43 2020 -0400
+
+    Switch from if-then tree to action map
+    
+    This is a cleaner structure for going forward
+
+commit 1b7e7eb86967ccdc6422753dddd73f07fa30109b
+Author: Larry Smith Jr <mrlesmithjr@gmail.com>
+Date:   Sat Mar 21 17:25:46 2020 -0400
+
+    Standardized CLI args from Cookiecutter template
+
+commit 5569a65faa0c861130ed1df0b28b09dd66531656
+Author: Larry Smith Jr <mrlesmithjr@gmail.com>
+Date:   Sat Mar 21 17:24:46 2020 -0400
+
+    Random cleanup, etc.
+    
+    Cleaned up code structure a bit. Need to do more cleanup soon.
+
+commit 792ee42591eb4af609ab1bc4dc96cc90a874833e
+Author: Larry Smith Jr <mrlesmithjr@gmail.com>
+Date:   Sat Mar 21 17:21:58 2020 -0400
+
+    Added new logging functionality
+    
+    This new functionality comes from the Cookiecutter template
+    It replaces teh old logging
+
+commit 13d7b1c3a6f87505a532e55109355141fc2ec44f
+Author: Larry Smith Jr <mrlesmithjr@gmail.com>
+Date:   Sat Mar 21 17:18:05 2020 -0400
+
+    New files, etc. from updated Cookiecutter template
+
+commit 3eb07dadb0e745e1ff13d93ac1ddcc9719b07b2c
+Author: Larry Smith Jr <mrlesmithjr@gmail.com>
+Date:   Tue Mar 3 01:38:11 2020 -0500
+
+    Fixing GitHub Actions and Travis CI tests
+
+commit aa1f12611881b1cf2343b469ca7b747ef8e11bd2
+Author: Larry Smith Jr <mrlesmithjr@gmail.com>
+Date:   Tue Mar 3 01:20:16 2020 -0500
+
+    Fixing additional Flake8 linting issues
+
+commit 68d4b03149c9daa906512a4932844cc55779ae6e
+Author: Larry Smith Jr <mrlesmithjr@gmail.com>
+Date:   Tue Mar 3 01:17:32 2020 -0500
+
+    Fixing Flake8 linting issues
+
+commit 58ddae01faa8e8dd14b8d03026149615880311e4
+Author: Larry Smith Jr <mrlesmithjr@gmail.com>
+Date:   Tue Mar 3 01:12:15 2020 -0500
+
+    Added changelog to track changes
+
 commit 0594c8c09ed934638a76edca561e96e34a42a511
 Author: Larry Smith Jr <mrlesmithjr@gmail.com>
 Date:   Tue Mar 3 01:11:02 2020 -0500

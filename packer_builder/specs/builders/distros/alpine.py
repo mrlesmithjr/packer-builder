@@ -41,7 +41,6 @@ def alpine_spec(**kwargs):
                 'chroot /mnt /bin/sh -l<enter>',
                 'apk update<enter><wait>',
                 'apk add bash curl rsyslog ruby shadow sudo<enter><wait>',
-                'gem install facter<enter>',
                 '<wait60><wait60>',
                 'exit<enter><wait10>',
                 'umount /mnt/proc<enter>',

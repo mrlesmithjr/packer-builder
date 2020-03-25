@@ -32,9 +32,9 @@ make
 
 # Post
 %post
-/usr/bin/yum -y update
+# /usr/bin/yum -y update
 /usr/bin/yum -y install epel-release
-/usr/bin/yum -y install facter perl redhat-lsb-core sudo wget
+/usr/bin/yum -y install perl redhat-lsb-core sudo wget
 /usr/sbin/groupadd {{ username }}
 /usr/sbin/useradd {{ username }} -g {{ username }} -G wheel
 echo "{{ password }}"|passwd --stdin {{ username }}

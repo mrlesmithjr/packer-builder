@@ -35,10 +35,9 @@ make
 %post
 /usr/bin/dnf -y update
 /usr/bin/dnf -y install epel-release
-/usr/bin/dnf -y install facter perl redhat-lsb-core rsyslog sudo wget
+/usr/bin/dnf -y install perl redhat-lsb-core rsyslog sudo wget
 /usr/sbin/groupadd {{ username }}
 /usr/sbin/useradd {{ username }} -g {{ username }} -G wheel
 echo "{{ password }}"|passwd --stdin {{ username }}
 echo "{{ username }}        ALL=(ALL)       NOPASSWD: ALL" >> /etc/sudoers
-sed -i -e 's/Defaults    requiretty.*/ #Defaults    requiretty/g' /etc/sudoers
 %end

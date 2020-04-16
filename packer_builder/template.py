@@ -3,6 +3,7 @@ import os
 import json
 import logging
 import subprocess
+from subprocess import PIPE
 import sys
 from packer_builder.specs.builders.common import common_builder
 from packer_builder.specs.builders.distro import distro_builder
@@ -178,7 +179,7 @@ class Template():
 
         validate = subprocess.run(
             ['packer', 'validate', 'template.json'], check=False,
-            capture_output=True)
+            stderr=PIPE, stdout=PIPE)
 
         # Display output back to stdout for visibility
         print(validate.stdout.decode("utf-8"))

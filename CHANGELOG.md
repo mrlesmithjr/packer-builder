@@ -1,3 +1,9 @@
+commit 411789cae2301ee8afcefd82d17d4570023ec317
+Author: Larry Smith Jr <mrlesmithjr@gmail.com>
+Date:   Thu Apr 16 01:08:09 2020 -0400
+
+    Fixing issue with Python 3.6
+
 commit da9c981e57c3f1fbaf712cf49969a84d3a9816f7
 Author: Larry Smith Jr <mrlesmithjr@gmail.com>
 Date:   Fri Feb 7 16:32:32 2020 -0500

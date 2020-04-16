@@ -1,3 +1,55 @@
+commit da9c981e57c3f1fbaf712cf49969a84d3a9816f7
+Author: Larry Smith Jr <mrlesmithjr@gmail.com>
+Date:   Fri Feb 7 16:32:32 2020 -0500
+
+    Lingering changes
+
+commit eeadc9989409eae50103ebc264d32901c1ba6a16
+Author: Larry Smith Jr <mrlesmithjr@gmail.com>
+Date:   Wed Apr 8 16:59:41 2020 -0400
+
+    Added CentOS 8 support
+    
+    CentOS 8 is now supported and tested.
+    
+    Closes #46
+
+commit ade53eda99d4833f18260464c6eb618786b01b74
+Author: Larry Smith Jr <mrlesmithjr@gmail.com>
+Date:   Wed Mar 25 08:24:01 2020 -0400
+
+    Removed facter from Alpine build
+    
+    Closes #51
+
+commit f222016972a3af647b54ee5ee37fc62e5d126846
+Author: Larry Smith Jr <mrlesmithjr@gmail.com>
+Date:   Sat Feb 15 21:16:42 2020 -0500
+
+    Fixed incorrect Debian id format
+
+commit b15a20da4bd7d4008169a1486fef8177e6b5e60c
+Author: Larry Smith Jr <mrlesmithjr@gmail.com>
+Date:   Sat Feb 15 01:01:15 2020 -0500
+
+    First commit to resolve issues #51 and #52
+
+commit 31a224b18cacb17c734030ef8a7acfa233ef7033
+Author: Larry Smith Jr <mrlesmithjr@gmail.com>
+Date:   Wed Mar 25 01:36:45 2020 -0400
+
+    Added logger rotation
+    
+    Needed to get log rotation enabled to minimize the log file size.
+    
+    Resolves #70
+
+commit 6d7dd92bba6e70359e1bbc51516ec6ed6557b12f
+Author: Larry Smith Jr <mrlesmithjr@gmail.com>
+Date:   Mon Mar 23 13:15:02 2020 -0400
+
+    Initial commit of documentation
+
 commit 598b7124d462d564ae9c5b24e785d71d91614971
 Author: Larry Smith Jr <mrlesmithjr@gmail.com>
 Date:   Sun Mar 22 11:21:00 2020 -0400

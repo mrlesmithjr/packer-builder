@@ -1,3 +1,9 @@
+commit 05ca5ffe1ca6e9e0fe41feed1b08558b8b4a8972
+Author: Larry Smith Jr <mrlesmithjr@gmail.com>
+Date:   Fri Apr 17 10:11:16 2020 -0400
+
+    Updated changelog
+
 commit 8eb1017a83f2dc5e3e9a5ef7ebdb811f626e6006
 Author: Larry Smith Jr <mrlesmithjr@gmail.com>
 Date:   Thu Apr 16 01:08:09 2020 -0400

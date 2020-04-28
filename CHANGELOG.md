@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 commit 05ca5ffe1ca6e9e0fe41feed1b08558b8b4a8972
 Author: Larry Smith Jr <mrlesmithjr@gmail.com>
 Date:   Fri Apr 17 10:11:16 2020 -0400
@@ -10,6 +11,8 @@ Date:   Thu Apr 16 01:08:09 2020 -0400
 
     Fixing issue with Python 3.6
 
+=======
+>>>>>>> Stashed changes
 commit eeadc9989409eae50103ebc264d32901c1ba6a16
 Author: Larry Smith Jr <mrlesmithjr@gmail.com>
 Date:   Wed Apr 8 16:59:41 2020 -0400

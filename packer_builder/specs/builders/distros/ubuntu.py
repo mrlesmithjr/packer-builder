@@ -22,12 +22,18 @@ def ubuntu_spec(**kwargs):
                 '<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>',
                 '<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>',
                 '<bs><bs><bs><bs><bs><bs>',
+                '<wait>',
                 '/install/vmlinuz',
+                '<wait>',
                 ' initrd=/install/initrd.gz',
+                '<wait>',
                 ' auto=true',
+                '<wait>',
                 ' priority=critical',
+                '<wait>',
                 ' url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/'f'{distro}-{version}-{bootstrap_cfg}',  # noqa: E501
-                ' <wait><enter>'
+                '<wait>',
+                '<enter>'
             ],
             'boot_wait': '30s',
             'shutdown_command': 'sudo /sbin/halt -h -p'

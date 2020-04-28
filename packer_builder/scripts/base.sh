@@ -139,7 +139,10 @@ elif [[ $id == "ubuntu" ]]; then
   sudo apt-get update
   echo "libc6:amd64     libraries/restart-without-asking        boolean true" | sudo debconf-set-selections
   echo "libssl1.1:amd64 libssl1.1/restart-services      string" | sudo debconf-set-selections
-  sudo apt-get install -y python-minimal linux-headers-"$(uname -r)" \
+  if [[ $os_version_id_short -lt 20.04 ]]; then
+    sudo apt-get install -y python-minimal
+  fi
+  sudo apt-get install -y linux-headers-"$(uname -r)" \
     build-essential zlib1g-dev libssl-dev libreadline-gplv2-dev unzip
   if [[ ! -f /etc/vyos_build ]]; then
     sudo apt-get -y install cloud-initramfs-growroot

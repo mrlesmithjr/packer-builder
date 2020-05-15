@@ -1,5 +1,31 @@
-<<<<<<< Updated upstream
-commit 05ca5ffe1ca6e9e0fe41feed1b08558b8b4a8972
+commit 558b019614ecc9c1bf3eee9b00f0b87d44e37cbe
+Author: Larry Smith Jr <mrlesmithjr@gmail.com>
+Date:   Tue Apr 28 12:44:08 2020 -0400
+
+    Added several wait commands
+    
+    For some reason Ubuntu boot_command is gobbling up the commands. Adding
+    wait commands seems to help with this.
+    
+    Resolves #81
+
+commit 68abf16c4c19fe52b1835658cdaf9544c61d0a85
+Author: Larry Smith Jr <mrlesmithjr@gmail.com>
+Date:   Mon Apr 27 23:08:04 2020 -0400
+
+    Added Ubuntu 20.04
+    
+    Now that Ubuntu 20.04 is out, we are adding Ubuntu 20.04 support.
+    
+    Closes #74
+
+commit e93c474b5fe7b1b1183bdf067265bb34c57da036
+Author: Larry Smith Jr <mrlesmithjr@gmail.com>
+Date:   Fri Apr 17 10:14:23 2020 -0400
+
+    Added Python 3.6 testing back
+
+commit 3df3a80b45ef48682b135256fd50d71d83e1746f
 Author: Larry Smith Jr <mrlesmithjr@gmail.com>
 Date:   Fri Apr 17 10:11:16 2020 -0400
 
@@ -11,8 +37,6 @@ Date:   Thu Apr 16 01:08:09 2020 -0400
 
     Fixing issue with Python 3.6
 
-=======
->>>>>>> Stashed changes
 commit eeadc9989409eae50103ebc264d32901c1ba6a16
 Author: Larry Smith Jr <mrlesmithjr@gmail.com>
 Date:   Wed Apr 8 16:59:41 2020 -0400

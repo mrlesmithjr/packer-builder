@@ -1,0 +1,4 @@
+# Python requirements for executing
+Jinja2
+pip-tools
+PyYAML

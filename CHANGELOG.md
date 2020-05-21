@@ -1,3 +1,9 @@
+commit dc95dde9f58ee8992f777e8ca34d0d895395a3f9
+Author: Larry Smith Jr <mrlesmithjr@gmail.com>
+Date:   Thu May 14 21:15:19 2020 -0400
+
+    Switched to pip-tools to manage Python reqs
+
 commit 558b019614ecc9c1bf3eee9b00f0b87d44e37cbe
 Author: Larry Smith Jr <mrlesmithjr@gmail.com>
 Date:   Tue Apr 28 12:44:08 2020 -0400

@@ -6,11 +6,19 @@ def ubuntu_spec(**kwargs):
     """Ubuntu specs."""
 
     # Setup vars from kwargs
+    builder = kwargs['data']['builder']
     builder_spec = kwargs['data']['builder_spec']
     distro = kwargs['data']['distro']
     version = kwargs['data']['version']
 
     bootstrap_cfg = 'preseed.cfg'
+
+    # https://github.com/mrlesmithjr/packer-builder/issues/83
+    if builder == 'qemu':
+        boot_wait = '5s'
+    else:
+        boot_wait = '30s'
+
     builder_spec.update(
         {
             'boot_command': [
@@ -35,7 +43,7 @@ def ubuntu_spec(**kwargs):
                 '<wait>',
                 '<enter>'
             ],
-            'boot_wait': '30s',
+            'boot_wait': f'{boot_wait}',
             'shutdown_command': 'sudo /sbin/halt -h -p'
         }
     )

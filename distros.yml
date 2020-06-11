@@ -14,15 +14,12 @@ Alpine:
   versions:
     "3.8":
       iso_checksum: 20d20e0658b6cc361832cfb49367f0a4c33570ef1521f2e394e9164d2a9bd9df
-      iso_checksum_type: sha256
       iso_url: http://dl-cdn.alpinelinux.org/alpine/v3.8/releases/x86_64/alpine-virt-3.8.4-x86_64.iso
     "3.9":
       iso_checksum: 75a784aa16ab6311dbf597bdec86259183ba5e74633e7e9201300d848d457216
-      iso_checksum_type: sha256
       iso_url: http://dl-cdn.alpinelinux.org/alpine/v3.9/releases/x86_64/alpine-virt-3.9.2-x86_64.iso
     "3.10":
       iso_checksum: b3d8fe65c2777edcbc30b52cde7f5ae21dff8ecda612d5fe7b10d5c23cda40c4
-      iso_checksum_type: sha256
       iso_url: http://dl-cdn.alpinelinux.org/alpine/v3.10/releases/x86_64/alpine-virt-3.10.0-x86_64.iso
 CentOS:
   builders:
@@ -39,11 +36,9 @@ CentOS:
   versions:
     "7":
       iso_checksum: 9a2c47d97b9975452f7d582264e9fc16d108ed8252ac6816239a3b58cef5c53d
-      iso_checksum_type: sha256
       iso_url: http://centos.mirror.constant.com/7/isos/x86_64/CentOS-7-x86_64-Minimal-1908.iso
     "8":
       iso_checksum: 3ee3f4ea1538e026fff763e2b284a6f20b259d91d1ad5688f5783a67d279423b
-      iso_checksum_type: sha256
       iso_url: http://centos.mirror.constant.com/8/isos/x86_64/CentOS-8.1.1911-x86_64-dvd1.iso
 Debian:
   builders:
@@ -61,15 +56,12 @@ Debian:
   versions:
     "8":
       iso_checksum: ea799ed959d77359783e7922ed4c94a7437b083a4ce6f09e9fe41a7af6ba60df
-      iso_checksum_type: sha256
       iso_url: https://cdimage.debian.org/cdimage/archive/8.11.0/amd64/iso-cd/debian-8.11.0-amd64-netinst.iso
     "9":
       iso_checksum: d4a22c81c76a66558fb92e690ef70a5d67c685a08216701b15746586520f6e8e
-      iso_checksum_type: sha256
       iso_url: https://cdimage.debian.org/cdimage/archive/9.9.0/amd64/iso-cd/debian-9.9.0-amd64-netinst.iso
     "10":
       iso_checksum: 6a901b5abe43d88b39d627e1339d15507cc38f980036b928f835e0f0e957d3d8
-      iso_checksum_type: sha256
       iso_url: https://cdimage.debian.org/debian-cd/current/amd64/iso-cd/debian-10.3.0-amd64-netinst.iso
 Fedora:
   builders:
@@ -86,15 +78,12 @@ Fedora:
   versions:
     "28":
       iso_checksum: ea1efdc692356b3346326f82e2f468903e8da59324fdee8b10eac4fea83f23fe
-      iso_checksum_type: sha256
       iso_url: https://archives.fedoraproject.org/pub/archive/fedora/linux/releases/28/Server/x86_64/iso/Fedora-Server-netinst-x86_64-28-1.1.iso
     "29":
       iso_checksum: aa7fb0e6e5b71774ebdaab0dae76bdd9246a5bc7aedc28b7f1103aaaf9750654
-      iso_checksum_type: sha256
       iso_url: https://archives.fedoraproject.org/pub/archive/fedora/linux/releases/29/Server/x86_64/iso/Fedora-Server-netinst-x86_64-29-1.2.iso
     "30":
       iso_checksum: 5e4eac4566d8c572bfb3bcf54b7d6c82006ec3c6c882a2c9235c6d3494d7b100
-      iso_checksum_type: sha256
       iso_url: http://fedora.mirrors.pair.com/linux/releases/30/Server/x86_64/iso/Fedora-Server-netinst-x86_64-30-1.2.iso
 FreeNAS:
   builders:
@@ -111,7 +100,6 @@ FreeNAS:
   versions:
     "11.2":
       iso_checksum: 3fb19c9304072bdf915d7c275e35ebc0a38d4b741e16f36a8f7af76413242092
-      iso_checksum_type: sha256
       iso_url: https://download.freenas.org/11.2/STABLE/U3/x64/FreeNAS-11.2-U3.iso
 Ubuntu:
   builders:
@@ -128,25 +116,19 @@ Ubuntu:
   versions:
     "14.04":
       iso_checksum: b17d7c1e9d0321ad5810ba77b69aef43f0f29a5422b08120e6ee0576c4527c0e
-      iso_checksum_type: sha256
       iso_url: http://releases.ubuntu.com/14.04/ubuntu-14.04.6-server-amd64.iso
     "16.04":
       iso_checksum: 16afb1375372c57471ea5e29803a89a5a6bd1f6aabea2e5e34ac1ab7eb9786ac
-      iso_checksum_type: sha256
       iso_url: http://releases.ubuntu.com/16.04/ubuntu-16.04.6-server-amd64.iso
     "18.04":
       iso_checksum: e2ecdace33c939527cbc9e8d23576381c493b071107207d2040af72595f8990b
-      iso_checksum_type: sha256
       iso_url: http://cdimage.ubuntu.com/releases/18.04/release/ubuntu-18.04.4-server-amd64.iso
     "18.10":
       iso_checksum: cf9250781dadd919f23c9d9612212cad653e35fccc2fbcf6853f67ad09e067ba
-      iso_checksum_type: sha256
       iso_url: http://cdimage.ubuntu.com/releases/18.10/release/ubuntu-18.10-server-amd64.iso
     "19.04":
       iso_checksum: 7e8a0d07522f591dfee9bc9fcd7c05466763161e6cb0117906655bce1750b2fa
-      iso_checksum_type: sha256
       iso_url: http://cdimage.ubuntu.com/releases/19.04/release/ubuntu-19.04-server-amd64.iso
     "20.04":
       iso_checksum: 36f15879bd9dfd061cd588620a164a82972663fdd148cce1f70d57d314c21b73
-      iso_checksum_type: sha256
       iso_url: http://cdimage.ubuntu.com/ubuntu-legacy-server/releases/20.04/release/ubuntu-20.04-legacy-server-amd64.iso

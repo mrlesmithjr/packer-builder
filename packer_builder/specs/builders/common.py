@@ -16,7 +16,6 @@ def common_builder(**kwargs):
         'disk_size': '{{ user `disk_size` }}',
         'headless': True,
         'http_directory': 'http',
-        'iso_checksum_type': '{{ user `iso_checksum_type` }}',
         'iso_checksum': '{{ user `iso_checksum` }}',
         'iso_url': '{{ user `iso_url` }}',
         'memory': '{{ user `memory` }}',

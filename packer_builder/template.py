@@ -55,7 +55,6 @@ class Template():
             'disk_adapter_type': self.distro_spec['disk_adapter_type'],
             'disk_size': str(self.distro_spec['disk_size']),
             'iso_checksum': self.version_spec['iso_checksum'],
-            'iso_checksum_type': self.version_spec['iso_checksum_type'],
             'iso_url': self.version_spec['iso_url'],
             'username': self.distro_spec['username'],
             'password': self.distro_spec['password'],
